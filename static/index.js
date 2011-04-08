@@ -269,7 +269,7 @@ var SearchController = Class.create({
   browse_to: function(name) {
     // Take the # off
     name = name.substring(1);
-  
+
     // Find the top-level symbol name.
     var top_level_symbol = name;
     if (top_level_symbol.indexOf(".") != -1)

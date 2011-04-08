@@ -118,3 +118,14 @@ span.highlight {
   left: 250px;
 }
 
+#links {
+  position: absolute;
+  right: 0px;
+  top: 2px;
+}
+
+#links a {
+  margin-right: 0.75em;
+  color: #336ac9;
+}
+
