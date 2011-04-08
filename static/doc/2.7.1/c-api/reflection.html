@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Reflection &mdash; Python v2.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.7.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python v2.7.1 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python v2.7.1 documentation" href="../index.html" />
+    <link rel="up" title="Utilities" href="utilities.html" />
+    <link rel="next" title="Codec registry and support functions" href="codec.html" />
+    <link rel="prev" title="String conversion and formatting" href="conversion.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+ 
+
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="reflection">
+<span id="id1"></span><h1>Reflection<a class="headerlink" href="#reflection" title="Permalink to this headline">¶</a></h1>
+<dl class="cfunction">
+<dt id="PyEval_GetBuiltins">
+<a title="PyObject" class="reference external" href="structures.html#PyObject">PyObject</a>* <tt class="descname">PyEval_GetBuiltins</tt><big>(</big><big>)</big><a class="headerlink" href="#PyEval_GetBuiltins" title="Permalink to this definition">¶</a></dt>
+<dd><em class="refcount">Return value: Borrowed reference.</em><p>Return a dictionary of the builtins in the current execution frame,
+or the interpreter of the thread state if no frame is currently executing.</p>
+</dd></dl>
+
+<dl class="cfunction">
+<dt id="PyEval_GetLocals">
+<a title="PyObject" class="reference external" href="structures.html#PyObject">PyObject</a>* <tt class="descname">PyEval_GetLocals</tt><big>(</big><big>)</big><a class="headerlink" href="#PyEval_GetLocals" title="Permalink to this definition">¶</a></dt>
+<dd><em class="refcount">Return value: Borrowed reference.</em><p>Return a dictionary of the local variables in the current execution frame,
+or <em>NULL</em> if no frame is currently executing.</p>
+</dd></dl>
+
+<dl class="cfunction">
+<dt id="PyEval_GetGlobals">
+<a title="PyObject" class="reference external" href="structures.html#PyObject">PyObject</a>* <tt class="descname">PyEval_GetGlobals</tt><big>(</big><big>)</big><a class="headerlink" href="#PyEval_GetGlobals" title="Permalink to this definition">¶</a></dt>
+<dd><em class="refcount">Return value: Borrowed reference.</em><p>Return a dictionary of the global variables in the current execution frame,
+or <em>NULL</em> if no frame is currently executing.</p>
+</dd></dl>
+
+<dl class="cfunction">
+<dt id="PyEval_GetFrame">
+PyFrameObject* <tt class="descname">PyEval_GetFrame</tt><big>(</big><big>)</big><a class="headerlink" href="#PyEval_GetFrame" title="Permalink to this definition">¶</a></dt>
+<dd><em class="refcount">Return value: Borrowed reference.</em><p>Return the current thread state&#8217;s frame, which is <em>NULL</em> if no frame is
+currently executing.</p>
+</dd></dl>
+
+<dl class="cfunction">
+<dt id="PyFrame_GetLineNumber">
+int <tt class="descname">PyFrame_GetLineNumber</tt><big>(</big>PyFrameObject<em> *frame</em><big>)</big><a class="headerlink" href="#PyFrame_GetLineNumber" title="Permalink to this definition">¶</a></dt>
+<dd>Return the line number that <em>frame</em> is currently executing.</dd></dl>
+
+<dl class="cfunction">
+<dt id="PyEval_GetRestricted">
+int <tt class="descname">PyEval_GetRestricted</tt><big>(</big><big>)</big><a class="headerlink" href="#PyEval_GetRestricted" title="Permalink to this definition">¶</a></dt>
+<dd>If there is a current frame and it is executing in restricted mode, return true,
+otherwise false.</dd></dl>
+
+<dl class="cfunction">
+<dt id="PyEval_GetFuncName">
+const char* <tt class="descname">PyEval_GetFuncName</tt><big>(</big><a title="PyObject" class="reference external" href="structures.html#PyObject">PyObject</a><em> *func</em><big>)</big><a class="headerlink" href="#PyEval_GetFuncName" title="Permalink to this definition">¶</a></dt>
+<dd>Return the name of <em>func</em> if it is a function, class or instance object, else the
+name of <em>func</em>s type.</dd></dl>
+
+<dl class="cfunction">
+<dt id="PyEval_GetFuncDesc">
+const char* <tt class="descname">PyEval_GetFuncDesc</tt><big>(</big><a title="PyObject" class="reference external" href="structures.html#PyObject">PyObject</a><em> *func</em><big>)</big><a class="headerlink" href="#PyEval_GetFuncDesc" title="Permalink to this definition">¶</a></dt>
+<dd>Return a description string, depending on the type of <em>func</em>.
+Return values include &#8220;()&#8221; for functions and methods, &#8221; constructor&#8221;,
+&#8221; instance&#8221;, and &#8221; object&#8221;.  Concatenated with the result of
+<a title="PyEval_GetFuncName" class="reference internal" href="#PyEval_GetFuncName"><tt class="xref docutils literal"><span class="pre">PyEval_GetFuncName()</span></tt></a>, the result will be a description of
+<em>func</em>.</dd></dl>
+
+</div>
+
+
+          </div>
+      </div>
+
+  </body>
+</html>

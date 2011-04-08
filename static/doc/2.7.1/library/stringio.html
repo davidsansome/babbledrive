@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>7.5. StringIO — Read and write strings as files &mdash; Python v2.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.7.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python v2.7.1 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python v2.7.1 documentation" href="../index.html" />
+    <link rel="up" title="7. String Services" href="strings.html" />
+    <link rel="next" title="7.7. textwrap — Text wrapping and filling" href="textwrap.html" />
+    <link rel="prev" title="7.4. difflib — Helpers for computing deltas" href="difflib.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+ 
+
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="module-StringIO">
+<h1>7.5. <tt class="xref docutils literal"><span class="pre">StringIO</span></tt> &#8212; Read and write strings as files<a class="headerlink" href="#module-StringIO" title="Permalink to this headline">¶</a></h1>
+<p>This module implements a file-like class, <a title="StringIO.StringIO" class="reference internal" href="#StringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO</span></tt></a>, that reads and
+writes a string buffer (also known as <em>memory files</em>).  See the description of
+file objects for operations (section <a class="reference external" href="stdtypes.html#bltin-file-objects"><em>File Objects</em></a>). (For
+standard strings, see <a title="str" class="reference external" href="functions.html#str"><tt class="xref docutils literal"><span class="pre">str</span></tt></a> and <a title="unicode" class="reference external" href="functions.html#unicode"><tt class="xref docutils literal"><span class="pre">unicode</span></tt></a>.)</p>
+<dl class="class">
+<dt id="StringIO.StringIO">
+<em class="property">class </em><tt class="descclassname">StringIO.</tt><tt class="descname">StringIO</tt><big>(</big><span class="optional">[</span><em>buffer</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#StringIO.StringIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>When a <a title="StringIO.StringIO" class="reference internal" href="#StringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO</span></tt></a> object is created, it can be initialized to an existing
+string by passing the string to the constructor. If no string is given, the
+<a title="StringIO.StringIO" class="reference internal" href="#StringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO</span></tt></a> will start empty. In both cases, the initial file position
+starts at zero.</p>
+<p>The <a title="StringIO.StringIO" class="reference internal" href="#StringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO</span></tt></a> object can accept either Unicode or 8-bit strings, but
+mixing the two may take some care.  If both are used, 8-bit strings that cannot
+be interpreted as 7-bit ASCII (that use the 8th bit) will cause a
+<a title="exceptions.UnicodeError" class="reference external" href="exceptions.html#exceptions.UnicodeError"><tt class="xref docutils literal"><span class="pre">UnicodeError</span></tt></a> to be raised when <a title="StringIO.StringIO.getvalue" class="reference internal" href="#StringIO.StringIO.getvalue"><tt class="xref docutils literal"><span class="pre">getvalue()</span></tt></a> is called.</p>
+</dd></dl>
+
+<p>The following methods of <a title="StringIO.StringIO" class="reference internal" href="#StringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO</span></tt></a> objects require special mention:</p>
+<dl class="method">
+<dt id="StringIO.StringIO.getvalue">
+<tt class="descclassname">StringIO.</tt><tt class="descname">getvalue</tt><big>(</big><big>)</big><a class="headerlink" href="#StringIO.StringIO.getvalue" title="Permalink to this definition">¶</a></dt>
+<dd>Retrieve the entire contents of the &#8220;file&#8221; at any time before the
+<a title="StringIO.StringIO" class="reference internal" href="#StringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO</span></tt></a> object&#8217;s <a title="StringIO.StringIO.close" class="reference internal" href="#StringIO.StringIO.close"><tt class="xref docutils literal"><span class="pre">close()</span></tt></a> method is called.  See the note above
+for information about mixing Unicode and 8-bit strings; such mixing can cause
+this method to raise <a title="exceptions.UnicodeError" class="reference external" href="exceptions.html#exceptions.UnicodeError"><tt class="xref docutils literal"><span class="pre">UnicodeError</span></tt></a>.</dd></dl>
+
+<dl class="method">
+<dt id="StringIO.StringIO.close">
+<tt class="descclassname">StringIO.</tt><tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#StringIO.StringIO.close" title="Permalink to this definition">¶</a></dt>
+<dd>Free the memory buffer.  Attempting to do further operations with a closed
+<a title="StringIO.StringIO" class="reference internal" href="#StringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO</span></tt></a> object will raise a <a title="exceptions.ValueError" class="reference external" href="exceptions.html#exceptions.ValueError"><tt class="xref docutils literal"><span class="pre">ValueError</span></tt></a>.</dd></dl>
+
+<p>Example usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">StringIO</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">StringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;First line.</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">output</span><span class="p">,</span> <span class="s">&#39;Second line.&#39;</span>
+
+<span class="c"># Retrieve file contents -- this will be</span>
+<span class="c"># &#39;First line.\nSecond line.\n&#39;</span>
+<span class="n">contents</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+
+<span class="c"># Close object and discard memory buffer --</span>
+<span class="c"># .getvalue() will now raise an exception.</span>
+<span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="module-cStringIO">
+<h1>7.6. <tt class="xref docutils literal"><span class="pre">cStringIO</span></tt> &#8212; Faster version of <tt class="xref docutils literal"><span class="pre">StringIO</span></tt><a class="headerlink" href="#module-cStringIO" title="Permalink to this headline">¶</a></h1>
+<p>The module <tt class="xref docutils literal"><span class="pre">cStringIO</span></tt> provides an interface similar to that of the
+<tt class="xref docutils literal"><span class="pre">StringIO</span></tt> module.  Heavy use of <a title="StringIO.StringIO" class="reference internal" href="#StringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO.StringIO</span></tt></a> objects can be
+made more efficient by using the function <a title="cStringIO.StringIO" class="reference internal" href="#cStringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO()</span></tt></a> from this module
+instead.</p>
+<dl class="function">
+<dt id="cStringIO.StringIO">
+<tt class="descclassname">cStringIO.</tt><tt class="descname">StringIO</tt><big>(</big><span class="optional">[</span><em>s</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#cStringIO.StringIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a StringIO-like stream for reading or writing.</p>
+<p>Since this is a factory function which returns objects of built-in types,
+there&#8217;s no way to build your own version using subclassing.  It&#8217;s not
+possible to set attributes on it.  Use the original <tt class="xref docutils literal"><span class="pre">StringIO</span></tt> module in
+those cases.</p>
+<p>Unlike the <tt class="xref docutils literal"><span class="pre">StringIO</span></tt> module, this module is not able to accept Unicode
+strings that cannot be encoded as plain ASCII strings.  Calling
+<a title="cStringIO.StringIO" class="reference internal" href="#cStringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO()</span></tt></a> with a Unicode string parameter populates the object with
+the buffer representation of the Unicode string instead of encoding the
+string.</p>
+<p>Another difference from the <tt class="xref docutils literal"><span class="pre">StringIO</span></tt> module is that calling
+<a title="cStringIO.StringIO" class="reference internal" href="#cStringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO()</span></tt></a> with a string parameter creates a read-only object. Unlike an
+object created without a string parameter, it does not have write methods.
+These objects are not generally visible.  They turn up in tracebacks as
+<tt class="xref docutils literal"><span class="pre">StringI</span></tt> and <tt class="xref docutils literal"><span class="pre">StringO</span></tt>.</p>
+</dd></dl>
+
+<p>The following data objects are provided as well:</p>
+<dl class="data">
+<dt id="cStringIO.InputType">
+<tt class="descclassname">cStringIO.</tt><tt class="descname">InputType</tt><a class="headerlink" href="#cStringIO.InputType" title="Permalink to this definition">¶</a></dt>
+<dd>The type object of the objects created by calling <a title="cStringIO.StringIO" class="reference internal" href="#cStringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO()</span></tt></a> with a string
+parameter.</dd></dl>
+
+<dl class="data">
+<dt id="cStringIO.OutputType">
+<tt class="descclassname">cStringIO.</tt><tt class="descname">OutputType</tt><a class="headerlink" href="#cStringIO.OutputType" title="Permalink to this definition">¶</a></dt>
+<dd>The type object of the objects returned by calling <a title="cStringIO.StringIO" class="reference internal" href="#cStringIO.StringIO"><tt class="xref docutils literal"><span class="pre">StringIO()</span></tt></a> with no
+parameters.</dd></dl>
+
+<p>There is a C API to the module as well; refer to the module source for  more
+information.</p>
+<p>Example usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cStringIO</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">cStringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+<span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;First line.</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="o">&gt;&gt;</span><span class="n">output</span><span class="p">,</span> <span class="s">&#39;Second line.&#39;</span>
+
+<span class="c"># Retrieve file contents -- this will be</span>
+<span class="c"># &#39;First line.\nSecond line.\n&#39;</span>
+<span class="n">contents</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+
+<span class="c"># Close object and discard memory buffer --</span>
+<span class="c"># .getvalue() will now raise an exception.</span>
+<span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+
+  </body>
+</html>

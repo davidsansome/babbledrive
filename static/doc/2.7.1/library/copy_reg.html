@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>11.3. copy_reg — Register pickle support functions &mdash; Python v2.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.7.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python v2.7.1 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python v2.7.1 documentation" href="../index.html" />
+    <link rel="up" title="11. Data Persistence" href="persistence.html" />
+    <link rel="next" title="11.4. shelve — Python object persistence" href="shelve.html" />
+    <link rel="prev" title="11.1. pickle — Python object serialization" href="pickle.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+ 
+
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="module-copy_reg">
+<h1>11.3. <tt class="xref docutils literal"><span class="pre">copy_reg</span></tt> &#8212; Register <a title="Convert Python objects to streams of bytes and back." class="reference external" href="pickle.html#module-pickle"><tt class="xref docutils literal"><span class="pre">pickle</span></tt></a> support functions<a class="headerlink" href="#module-copy_reg" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="xref docutils literal"><span class="pre">copy_reg</span></tt> module has been renamed to <tt class="xref docutils literal"><span class="pre">copyreg</span></tt> in Python 3.0.
+The <a class="reference external" href="../glossary.html#term-to3"><em class="xref">2to3</em></a> tool will automatically adapt imports when converting your
+sources to 3.0.</p>
+</div>
+<p id="index-272">The <tt class="xref docutils literal"><span class="pre">copy_reg</span></tt> module provides support for the <a title="Convert Python objects to streams of bytes and back." class="reference external" href="pickle.html#module-pickle"><tt class="xref docutils literal"><span class="pre">pickle</span></tt></a> and
+<a title="Faster version of pickle, but not subclassable." class="reference external" href="pickle.html#module-cPickle"><tt class="xref docutils literal"><span class="pre">cPickle</span></tt></a> modules.  The <a title="Shallow and deep copy operations." class="reference external" href="copy.html#module-copy"><tt class="xref docutils literal"><span class="pre">copy</span></tt></a> module is likely to use this in the
+future as well.  It provides configuration information about object constructors
+which are not classes.  Such constructors may be factory functions or class
+instances.</p>
+<dl class="function">
+<dt id="copy_reg.constructor">
+<tt class="descclassname">copy_reg.</tt><tt class="descname">constructor</tt><big>(</big><em>object</em><big>)</big><a class="headerlink" href="#copy_reg.constructor" title="Permalink to this definition">¶</a></dt>
+<dd>Declares <em>object</em> to be a valid constructor.  If <em>object</em> is not callable (and
+hence not valid as a constructor), raises <a title="exceptions.TypeError" class="reference external" href="exceptions.html#exceptions.TypeError"><tt class="xref docutils literal"><span class="pre">TypeError</span></tt></a>.</dd></dl>
+
+<dl class="function">
+<dt id="copy_reg.pickle">
+<tt class="descclassname">copy_reg.</tt><tt class="descname">pickle</tt><big>(</big><em>type</em>, <em>function</em><span class="optional">[</span>, <em>constructor</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#copy_reg.pickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Declares that <em>function</em> should be used as a &#8220;reduction&#8221; function for objects of
+type <em>type</em>; <em>type</em> must not be a &#8220;classic&#8221; class object.  (Classic classes are
+handled differently; see the documentation for the <a title="Convert Python objects to streams of bytes and back." class="reference external" href="pickle.html#module-pickle"><tt class="xref docutils literal"><span class="pre">pickle</span></tt></a> module for
+details.)  <em>function</em> should return either a string or a tuple containing two or
+three elements.</p>
+<p>The optional <em>constructor</em> parameter, if provided, is a callable object which
+can be used to reconstruct the object when called with the tuple of arguments
+returned by <em>function</em> at pickling time.  <a title="exceptions.TypeError" class="reference external" href="exceptions.html#exceptions.TypeError"><tt class="xref docutils literal"><span class="pre">TypeError</span></tt></a> will be raised if
+<em>object</em> is a class or <em>constructor</em> is not callable.</p>
+<p>See the <a title="Convert Python objects to streams of bytes and back." class="reference external" href="pickle.html#module-pickle"><tt class="xref docutils literal"><span class="pre">pickle</span></tt></a> module for more details on the interface expected of
+<em>function</em> and <em>constructor</em>.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+      </div>
+
+  </body>
+</html>

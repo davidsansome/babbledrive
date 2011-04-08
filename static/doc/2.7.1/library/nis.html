@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>35.14. nis — Interface to Sun’s NIS (Yellow Pages) &mdash; Python v2.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.7.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python v2.7.1 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python v2.7.1 documentation" href="../index.html" />
+    <link rel="up" title="35. Unix Specific Services" href="unix.html" />
+    <link rel="next" title="35.15. syslog — Unix syslog library routines" href="syslog.html" />
+    <link rel="prev" title="35.13. resource — Resource usage information" href="resource.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+ 
+
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="module-nis">
+<h1>35.14. <tt class="xref docutils literal"><span class="pre">nis</span></tt> &#8212; Interface to Sun&#8217;s NIS (Yellow Pages)<a class="headerlink" href="#module-nis" title="Permalink to this headline">¶</a></h1>
+<p><em>Platforms: </em>Unix</p>
+<p>The <tt class="xref docutils literal"><span class="pre">nis</span></tt> module gives a thin wrapper around the NIS library, useful for
+central administration of several hosts.</p>
+<p>Because NIS exists only on Unix systems, this module is only available for Unix.</p>
+<p>The <tt class="xref docutils literal"><span class="pre">nis</span></tt> module defines the following functions:</p>
+<dl class="function">
+<dt id="nis.match">
+<tt class="descclassname">nis.</tt><tt class="descname">match</tt><big>(</big><em>key</em>, <em>mapname</em><span class="optional">[</span>, <em>domain=default_domain</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#nis.match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the match for <em>key</em> in map <em>mapname</em>, or raise an error
+(<a title="nis.error" class="reference internal" href="#nis.error"><tt class="xref docutils literal"><span class="pre">nis.error</span></tt></a>) if there is none. Both should be strings, <em>key</em> is 8-bit
+clean. Return value is an arbitrary array of bytes (may contain <tt class="docutils literal"><span class="pre">NULL</span></tt> and
+other joys).</p>
+<p>Note that <em>mapname</em> is first checked if it is an alias to another name.</p>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 2.5: </span>The <em>domain</em> argument allows to override the NIS domain used for the lookup. If
+unspecified, lookup is in the default NIS domain.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="nis.cat">
+<tt class="descclassname">nis.</tt><tt class="descname">cat</tt><big>(</big><em>mapname</em><span class="optional">[</span>, <em>domain=default_domain</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#nis.cat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary mapping <em>key</em> to <em>value</em> such that <tt class="docutils literal"><span class="pre">match(key,</span>
+<span class="pre">mapname)==value</span></tt>. Note that both keys and values of the dictionary are
+arbitrary arrays of bytes.</p>
+<p>Note that <em>mapname</em> is first checked if it is an alias to another name.</p>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 2.5: </span>The <em>domain</em> argument allows to override the NIS domain used for the lookup. If
+unspecified, lookup is in the default NIS domain.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="nis.maps">
+<tt class="descclassname">nis.</tt><tt class="descname">maps</tt><big>(</big><span class="optional">[</span><em>domain=default_domain</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#nis.maps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all valid maps.</p>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 2.5: </span>The <em>domain</em> argument allows to override the NIS domain used for the lookup. If
+unspecified, lookup is in the default NIS domain.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="nis.get_default_domain">
+<tt class="descclassname">nis.</tt><tt class="descname">get_default_domain</tt><big>(</big><big>)</big><a class="headerlink" href="#nis.get_default_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the system default NIS domain.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.5.</span></p>
+</dd></dl>
+
+<p>The <tt class="xref docutils literal"><span class="pre">nis</span></tt> module defines the following exception:</p>
+<dl class="exception">
+<dt id="nis.error">
+<em class="property">exception </em><tt class="descclassname">nis.</tt><tt class="descname">error</tt><a class="headerlink" href="#nis.error" title="Permalink to this definition">¶</a></dt>
+<dd>An error raised when a NIS function returns an error code.</dd></dl>
+
+</div>
+
+
+          </div>
+      </div>
+
+  </body>
+</html>

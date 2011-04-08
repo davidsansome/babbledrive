@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>24.7. Other Graphical User Interface Packages &mdash; Python v2.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.7.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python v2.7.1 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python v2.7.1 documentation" href="../index.html" />
+    <link rel="up" title="24. Graphical User Interfaces with Tk" href="tk.html" />
+    <link rel="next" title="25. Development Tools" href="development.html" />
+    <link rel="prev" title="24.6. IDLE" href="idle.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+ 
+
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="other-graphical-user-interface-packages">
+<span id="other-gui-packages"></span><h1>24.7. Other Graphical User Interface Packages<a class="headerlink" href="#other-graphical-user-interface-packages" title="Permalink to this headline">¶</a></h1>
+<p>There are an number of extension widget sets to <a title="Interface to Tcl/Tk for graphical user interfaces" class="reference external" href="tkinter.html#module-Tkinter"><tt class="xref docutils literal"><span class="pre">Tkinter</span></tt></a>.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference external" href="http://pmw.sourceforge.net/">Python megawidgets</a></dt>
+<dd><p class="first">is a toolkit for building high-level compound widgets in Python using the
+<a title="Interface to Tcl/Tk for graphical user interfaces" class="reference external" href="tkinter.html#module-Tkinter"><tt class="xref docutils literal"><span class="pre">Tkinter</span></tt></a> module.  It consists of a set of base classes and a library of
+flexible and extensible megawidgets built on this foundation. These megawidgets
+include notebooks, comboboxes, selection widgets, paned widgets, scrolled
+widgets, dialog windows, etc.  Also, with the Pmw.Blt interface to BLT, the
+busy, graph, stripchart, tabset and vector commands are be available.</p>
+<p class="last">The initial ideas for Pmw were taken from the Tk <tt class="docutils literal"><span class="pre">itcl</span></tt> extensions <tt class="docutils literal"><span class="pre">[incr</span>
+<span class="pre">Tk]</span></tt> by Michael McLennan and <tt class="docutils literal"><span class="pre">[incr</span> <span class="pre">Widgets]</span></tt> by Mark Ulferts. Several of the
+megawidgets are direct translations from the itcl to Python. It offers most of
+the range of widgets that <tt class="docutils literal"><span class="pre">[incr</span> <span class="pre">Widgets]</span></tt> does, and is almost as complete as
+Tix, lacking however Tix&#8217;s fast <tt class="xref docutils literal"><span class="pre">HList</span></tt> widget for drawing trees.</p>
+</dd>
+<dt><a class="reference external" href="http://tkinter.effbot.org/">Tkinter3000 Widget Construction Kit (WCK)</a></dt>
+<dd>is a library that allows you to write new Tkinter widgets in pure Python.  The
+WCK framework gives you full control over widget creation, configuration, screen
+appearance, and event handling.  WCK widgets can be very fast and light-weight,
+since they can operate directly on Python data structures, without having to
+transfer data through the Tk/Tcl layer.</dd>
+</dl>
+</div>
+<p>The major cross-platform (Windows, Mac OS X, Unix-like) GUI toolkits that are
+also available for Python:</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference external" href="http://www.pygtk.org/">PyGTK</a></dt>
+<dd>is a set of bindings for the <a class="reference external" href="http://www.gtk.org/">GTK</a> widget set. It
+provides an object oriented interface that is slightly higher level than
+the C one. It comes with many more widgets than Tkinter provides, and has
+good Python-specific reference documentation. There are also bindings to
+<a class="reference external" href="http://www.gnome.org">GNOME</a>.  One well known PyGTK application is
+<a class="reference external" href="http://www.pythoncad.org/">PythonCAD</a>. An online <a class="reference external" href="http://www.pygtk.org/pygtk2tutorial/index.html">tutorial</a> is available.</dd>
+<dt><a class="reference external" href="http://www.riverbankcomputing.co.uk/software/pyqt/">PyQt</a></dt>
+<dd>PyQt is a <strong>sip</strong>-wrapped binding to the Qt toolkit.  Qt is an
+extensive C++ GUI application development framework that is
+available for Unix, Windows and Mac OS X. <strong>sip</strong> is a tool
+for generating bindings for C++ libraries as Python classes, and
+is specifically designed for Python. The <em>PyQt3</em> bindings have a
+book, <a class="reference external" href="http://www.commandprompt.com/community/pyqt/">GUI Programming with Python: QT Edition</a> by Boudewijn
+Rempt. The <em>PyQt4</em> bindings also have a book, <a class="reference external" href="http://www.qtrac.eu/pyqtbook.html">Rapid GUI Programming
+with Python and Qt</a>, by Mark
+Summerfield.</dd>
+<dt><a class="reference external" href="http://www.wxpython.org">wxPython</a></dt>
+<dd>wxPython is a cross-platform GUI toolkit for Python that is built around
+the popular <a class="reference external" href="http://www.wxwidgets.org/">wxWidgets</a> (formerly wxWindows)
+C++ toolkit.  It provides a native look and feel for applications on
+Windows, Mac OS X, and Unix systems by using each platform&#8217;s native
+widgets where ever possible, (GTK+ on Unix-like systems).  In addition to
+an extensive set of widgets, wxPython provides classes for online
+documentation and context sensitive help, printing, HTML viewing,
+low-level device context drawing, drag and drop, system clipboard access,
+an XML-based resource format and more, including an ever growing library
+of user-contributed modules.  wxPython has a book, <a class="reference external" href="http://www.amazon.com/exec/obidos/ASIN/1932394621">wxPython in Action</a>, by Noel Rappin and
+Robin Dunn.</dd>
+</dl>
+</div>
+<p>PyGTK, PyQt, and wxPython, all have a modern look and feel and more
+widgets than Tkinter. In addition, there are many other GUI toolkits for
+Python, both cross-platform, and platform-specific. See the <a class="reference external" href="http://wiki.python.org/moin/GuiProgramming">GUI Programming</a> page in the Python Wiki for a
+much more complete list, and also for links to documents where the
+different GUI toolkits are compared.</p>
+</div>
+
+
+          </div>
+      </div>
+
+  </body>
+</html>

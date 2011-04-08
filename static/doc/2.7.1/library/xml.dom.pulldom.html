@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>19.8. xml.dom.pulldom — Support for building partial DOM trees &mdash; Python v2.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.7.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python v2.7.1 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python v2.7.1 documentation" href="../index.html" />
+    <link rel="up" title="19. Structured Markup Processing Tools" href="markup.html" />
+    <link rel="next" title="19.9. xml.sax — Support for SAX2 parsers" href="xml.sax.html" />
+    <link rel="prev" title="19.7. xml.dom.minidom — Lightweight DOM implementation" href="xml.dom.minidom.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+ 
+
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="module-xml.dom.pulldom">
+<h1>19.8. <tt class="xref docutils literal"><span class="pre">xml.dom.pulldom</span></tt> &#8212; Support for building partial DOM trees<a class="headerlink" href="#module-xml.dom.pulldom" title="Permalink to this headline">¶</a></h1>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.0.</span></p>
+<p><tt class="xref docutils literal"><span class="pre">xml.dom.pulldom</span></tt> allows building only selected portions of a Document
+Object Model representation of a document from SAX events.</p>
+<dl class="class">
+<dt id="xml.dom.pulldom.PullDOM">
+<em class="property">class </em><tt class="descclassname">xml.dom.pulldom.</tt><tt class="descname">PullDOM</tt><big>(</big><span class="optional">[</span><em>documentFactory</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#xml.dom.pulldom.PullDOM" title="Permalink to this definition">¶</a></dt>
+<dd><a title="xml.sax.handler.ContentHandler" class="reference external" href="xml.sax.handler.html#xml.sax.handler.ContentHandler"><tt class="xref docutils literal"><span class="pre">xml.sax.handler.ContentHandler</span></tt></a> implementation that ...</dd></dl>
+
+<dl class="class">
+<dt id="xml.dom.pulldom.DOMEventStream">
+<em class="property">class </em><tt class="descclassname">xml.dom.pulldom.</tt><tt class="descname">DOMEventStream</tt><big>(</big><em>stream</em>, <em>parser</em>, <em>bufsize</em><big>)</big><a class="headerlink" href="#xml.dom.pulldom.DOMEventStream" title="Permalink to this definition">¶</a></dt>
+<dd>...</dd></dl>
+
+<dl class="class">
+<dt id="xml.dom.pulldom.SAX2DOM">
+<em class="property">class </em><tt class="descclassname">xml.dom.pulldom.</tt><tt class="descname">SAX2DOM</tt><big>(</big><span class="optional">[</span><em>documentFactory</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#xml.dom.pulldom.SAX2DOM" title="Permalink to this definition">¶</a></dt>
+<dd><a title="xml.sax.handler.ContentHandler" class="reference external" href="xml.sax.handler.html#xml.sax.handler.ContentHandler"><tt class="xref docutils literal"><span class="pre">xml.sax.handler.ContentHandler</span></tt></a> implementation that ...</dd></dl>
+
+<dl class="function">
+<dt id="xml.dom.pulldom.parse">
+<tt class="descclassname">xml.dom.pulldom.</tt><tt class="descname">parse</tt><big>(</big><em>stream_or_string</em><span class="optional">[</span>, <em>parser</em><span class="optional">[</span>, <em>bufsize</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#xml.dom.pulldom.parse" title="Permalink to this definition">¶</a></dt>
+<dd>...</dd></dl>
+
+<dl class="function">
+<dt id="xml.dom.pulldom.parseString">
+<tt class="descclassname">xml.dom.pulldom.</tt><tt class="descname">parseString</tt><big>(</big><em>string</em><span class="optional">[</span>, <em>parser</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#xml.dom.pulldom.parseString" title="Permalink to this definition">¶</a></dt>
+<dd>...</dd></dl>
+
+<dl class="data">
+<dt id="xml.dom.pulldom.default_bufsize">
+<tt class="descclassname">xml.dom.pulldom.</tt><tt class="descname">default_bufsize</tt><a class="headerlink" href="#xml.dom.pulldom.default_bufsize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default value for the <em>bufsize</em> parameter to <a title="xml.dom.pulldom.parse" class="reference internal" href="#xml.dom.pulldom.parse"><tt class="xref docutils literal"><span class="pre">parse()</span></tt></a>.</p>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 2.1: </span>The value of this variable can be changed before calling <a title="xml.dom.pulldom.parse" class="reference internal" href="#xml.dom.pulldom.parse"><tt class="xref docutils literal"><span class="pre">parse()</span></tt></a> and the
+new value will take effect.</p>
+</dd></dl>
+
+<div class="section" id="domeventstream-objects">
+<span id="id1"></span><h2>19.8.1. DOMEventStream Objects<a class="headerlink" href="#domeventstream-objects" title="Permalink to this headline">¶</a></h2>
+<dl class="method">
+<dt id="xml.dom.pulldom.DOMEventStream.getEvent">
+<tt class="descclassname">DOMEventStream.</tt><tt class="descname">getEvent</tt><big>(</big><big>)</big><a class="headerlink" href="#xml.dom.pulldom.DOMEventStream.getEvent" title="Permalink to this definition">¶</a></dt>
+<dd>...</dd></dl>
+
+<dl class="method">
+<dt id="xml.dom.pulldom.DOMEventStream.expandNode">
+<tt class="descclassname">DOMEventStream.</tt><tt class="descname">expandNode</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#xml.dom.pulldom.DOMEventStream.expandNode" title="Permalink to this definition">¶</a></dt>
+<dd>...</dd></dl>
+
+<dl class="method">
+<dt id="xml.dom.pulldom.DOMEventStream.reset">
+<tt class="descclassname">DOMEventStream.</tt><tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#xml.dom.pulldom.DOMEventStream.reset" title="Permalink to this definition">¶</a></dt>
+<dd>...</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+      </div>
+
+  </body>
+</html>

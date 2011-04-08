@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>16.5. dummy_thread — Drop-in replacement for the thread module &mdash; Python v2.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.7.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python v2.7.1 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python v2.7.1 documentation" href="../index.html" />
+    <link rel="up" title="16. Optional Operating System Services" href="someos.html" />
+    <link rel="next" title="16.6. multiprocessing — Process-based “threading” interface" href="multiprocessing.html" />
+    <link rel="prev" title="16.4. dummy_threading — Drop-in replacement for the threading module" href="dummy_threading.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+ 
+
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="module-dummy_thread">
+<h1>16.5. <tt class="xref docutils literal"><span class="pre">dummy_thread</span></tt> &#8212; Drop-in replacement for the <a title="Create multiple threads of control within one interpreter." class="reference external" href="thread.html#module-thread"><tt class="xref docutils literal"><span class="pre">thread</span></tt></a> module<a class="headerlink" href="#module-dummy_thread" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="xref docutils literal"><span class="pre">dummy_thread</span></tt> module has been renamed to <tt class="xref docutils literal"><span class="pre">_dummy_thread</span></tt> in
+Python 3.0.  The <a class="reference external" href="../glossary.html#term-to3"><em class="xref">2to3</em></a> tool will automatically adapt imports when
+converting your sources to 3.0; however, you should consider using the
+high-lever <a title="Drop-in replacement for the threading module." class="reference external" href="dummy_threading.html#module-dummy_threading"><tt class="xref docutils literal"><span class="pre">dummy_threading</span></tt></a> module instead.</p>
+</div>
+<p>This module provides a duplicate interface to the <a title="Create multiple threads of control within one interpreter." class="reference external" href="thread.html#module-thread"><tt class="xref docutils literal"><span class="pre">thread</span></tt></a> module.  It is
+meant to be imported when the <a title="Create multiple threads of control within one interpreter." class="reference external" href="thread.html#module-thread"><tt class="xref docutils literal"><span class="pre">thread</span></tt></a> module is not provided on a
+platform.</p>
+<p>Suggested usage is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">thread</span> <span class="kn">as</span> <span class="nn">_thread</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">dummy_thread</span> <span class="kn">as</span> <span class="nn">_thread</span>
+</pre></div>
+</div>
+<p>Be careful to not use this module where deadlock might occur from a thread
+being created that blocks waiting for another thread to be created.  This  often
+occurs with blocking I/O.</p>
+</div>
+
+
+          </div>
+      </div>
+
+  </body>
+</html>

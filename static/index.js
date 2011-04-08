@@ -1,9 +1,11 @@
 var SearchController = Class.create({
-  BASE_URL: "http://docs.python.org/",
+  BASE_URL: "static/doc/2.7.1/",
 
-  initialize: function(input_element, results_element) {
+  initialize: function(input_element, results_element, content_element, header_element) {
     this.input_element = input_element;
     this.results_element = results_element;
+    this.content_element = content_element;
+    this.header_element = header_element;
 
     // Listen for key events on the input box.
     this.input_element.observe('keyup', this.input_changed.bind(this));
@@ -11,8 +13,13 @@ var SearchController = Class.create({
     // Listen for key events on everything.
     document.observe('keydown', this.key_pressed.bind(this));
 
-    // Fill the results list initially
+    // Listen for an event when the frame's URL changes.
+    this.content_element.observe('load', this.content_frame_changed.bind(this));
+    this.content_frame_changed();
+
+    // Fill the results list initially and focus the search box.
     this.search("");
+    this.input_element.focus();
   },
 
   input_changed: function(event) {
@@ -95,7 +102,7 @@ var SearchController = Class.create({
 
       // Add to the HTML
       html[match_type] += '<li class="' + result.type + '">' +
-                          '<a target="content1" href="' + result.url + '">' +
+                          '<a target="contentframe" href="' + result.url + '">' +
                           highlighted_name + '</a></li>';
     }
 
@@ -117,6 +124,8 @@ var SearchController = Class.create({
   },
 
   key_pressed: function(event) {
+    var element = Event.findElement(event);
+
     switch (event.keyCode) {
       case Event.KEY_UP:
         this.move_selection(-1);
@@ -136,10 +145,14 @@ var SearchController = Class.create({
         break;
 
       default:
+        if (event.keyCode >= 65 && event.keyCode <= 90 && element != this.input_element) {
+          this.input_element.value += String.fromCharCode(event.keyCode).toLowerCase();
+          this.input_element.focus();
+        }
         return;
     }
 
-    event.stop();
+    Event.stop(event);
   },
 
   get_result_li: function(index) {
@@ -195,12 +208,24 @@ var SearchController = Class.create({
   },
 
   activate_li: function(li) {
-    var a = li.select("a")[0];
-    $("content1").src = a.href;
+    this.content_element.src = li.select("a")[0].href;
   },
+
+  content_frame_changed: function(event) {
+    var frame_document = this.content_element.contentWindow.document;
+
+    // Update the title
+    var title = frame_document.title;
+    this.header_element.update(title.escapeHTML());
+    document.title = title;
+
+    // Listen for keypresses
+    Event.observe(frame_document, 'keydown', this.key_pressed.bind(this));
+  }
 });
 
 var controller;
 Event.observe(window, 'load', function() {
-  controller = new SearchController($("search"), $("searchresults"));
+  controller = new SearchController(
+    $("search"), $("searchresults"), $("contentframe"), $("contentheader"));
 });

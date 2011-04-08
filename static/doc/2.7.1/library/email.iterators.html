@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>18.1.10. email: Iterators &mdash; Python v2.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.7.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python v2.7.1 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python v2.7.1 documentation" href="../index.html" />
+    <link rel="up" title="18.1. email — An email and MIME handling package" href="email.html" />
+    <link rel="next" title="18.1.11. email: Examples" href="email-examples.html" />
+    <link rel="prev" title="18.1.9. email: Miscellaneous utilities" href="email.util.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+ 
+
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="module-email.iterators">
+<h1>18.1.10. <a title="Package supporting the parsing, manipulating, and generating email messages, including MIME documents." class="reference external" href="email.html#module-email"><tt class="xref docutils literal"><span class="pre">email</span></tt></a>: Iterators<a class="headerlink" href="#module-email.iterators" title="Permalink to this headline">¶</a></h1>
+<p>Iterating over a message object tree is fairly easy with the
+<tt class="xref docutils literal"><span class="pre">Message.walk()</span></tt> method.  The <tt class="xref docutils literal"><span class="pre">email.iterators</span></tt> module provides some
+useful higher level iterations over message object trees.</p>
+<dl class="function">
+<dt id="email.iterators.body_line_iterator">
+<tt class="descclassname">email.iterators.</tt><tt class="descname">body_line_iterator</tt><big>(</big><em>msg</em><span class="optional">[</span>, <em>decode</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#email.iterators.body_line_iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>This iterates over all the payloads in all the subparts of <em>msg</em>, returning the
+string payloads line-by-line.  It skips over all the subpart headers, and it
+skips over any subpart with a payload that isn&#8217;t a Python string.  This is
+somewhat equivalent to reading the flat text representation of the message from
+a file using <tt class="xref docutils literal"><span class="pre">readline()</span></tt>, skipping over all the intervening headers.</p>
+<p>Optional <em>decode</em> is passed through to <tt class="xref docutils literal"><span class="pre">Message.get_payload()</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="email.iterators.typed_subpart_iterator">
+<tt class="descclassname">email.iterators.</tt><tt class="descname">typed_subpart_iterator</tt><big>(</big><em>msg</em><span class="optional">[</span>, <em>maintype</em><span class="optional">[</span>, <em>subtype</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#email.iterators.typed_subpart_iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>This iterates over all the subparts of <em>msg</em>, returning only those subparts that
+match the MIME type specified by <em>maintype</em> and <em>subtype</em>.</p>
+<p>Note that <em>subtype</em> is optional; if omitted, then subpart MIME type matching is
+done only with the main type.  <em>maintype</em> is optional too; it defaults to
+<em>text</em>.</p>
+<p>Thus, by default <a title="email.iterators.typed_subpart_iterator" class="reference internal" href="#email.iterators.typed_subpart_iterator"><tt class="xref docutils literal"><span class="pre">typed_subpart_iterator()</span></tt></a> returns each subpart that has a
+MIME type of <em>text/*</em>.</p>
+</dd></dl>
+
+<p>The following function has been added as a useful debugging tool.  It should
+<em>not</em> be considered part of the supported public interface for the package.</p>
+<dl class="function">
+<dt id="email.iterators._structure">
+<tt class="descclassname">email.iterators.</tt><tt class="descname">_structure</tt><big>(</big><em>msg</em><span class="optional">[</span>, <em>fp</em><span class="optional">[</span>, <em>level</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#email.iterators._structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints an indented representation of the content types of the message object
+structure.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">msg</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">message_from_file</span><span class="p">(</span><span class="n">somefile</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_structure</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="go">multipart/mixed</span>
+<span class="go">    text/plain</span>
+<span class="go">    text/plain</span>
+<span class="go">    multipart/digest</span>
+<span class="go">        message/rfc822</span>
+<span class="go">            text/plain</span>
+<span class="go">        message/rfc822</span>
+<span class="go">            text/plain</span>
+<span class="go">        message/rfc822</span>
+<span class="go">            text/plain</span>
+<span class="go">        message/rfc822</span>
+<span class="go">            text/plain</span>
+<span class="go">        message/rfc822</span>
+<span class="go">            text/plain</span>
+<span class="go">    text/plain</span>
+</pre></div>
+</div>
+<p>Optional <em>fp</em> is a file-like object to print the output to.  It must be suitable
+for Python&#8217;s extended print statement.  <em>level</em> is used internally.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+      </div>
+
+  </body>
+</html>

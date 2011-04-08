@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>8.17. copy — Shallow and deep copy operations &mdash; Python v2.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.7.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python v2.7.1 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python v2.7.1 documentation" href="../index.html" />
+    <link rel="up" title="8. Data Types" href="datatypes.html" />
+    <link rel="next" title="8.18. pprint — Data pretty printer" href="pprint.html" />
+    <link rel="prev" title="8.16. new — Creation of runtime internal objects" href="new.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+ 
+
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="module-copy">
+<h1>8.17. <tt class="xref docutils literal"><span class="pre">copy</span></tt> &#8212; Shallow and deep copy operations<a class="headerlink" href="#module-copy" title="Permalink to this headline">¶</a></h1>
+<p>This module provides generic (shallow and deep) copying operations.</p>
+<p>Interface summary:</p>
+<dl class="function">
+<dt id="copy.copy">
+<tt class="descclassname">copy.</tt><tt class="descname">copy</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#copy.copy" title="Permalink to this definition">¶</a></dt>
+<dd>Return a shallow copy of <em>x</em>.</dd></dl>
+
+<dl class="function">
+<dt id="copy.deepcopy">
+<tt class="descclassname">copy.</tt><tt class="descname">deepcopy</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#copy.deepcopy" title="Permalink to this definition">¶</a></dt>
+<dd>Return a deep copy of <em>x</em>.</dd></dl>
+
+<dl class="exception">
+<dt id="copy.error">
+<em class="property">exception </em><tt class="descclassname">copy.</tt><tt class="descname">error</tt><a class="headerlink" href="#copy.error" title="Permalink to this definition">¶</a></dt>
+<dd>Raised for module specific errors.</dd></dl>
+
+<p>The difference between shallow and deep copying is only relevant for compound
+objects (objects that contain other objects, like lists or class instances):</p>
+<ul class="simple">
+<li>A <em>shallow copy</em> constructs a new compound object and then (to the extent
+possible) inserts <em>references</em> into it to the objects found in the original.</li>
+<li>A <em>deep copy</em> constructs a new compound object and then, recursively, inserts
+<em>copies</em> into it of the objects found in the original.</li>
+</ul>
+<p>Two problems often exist with deep copy operations that don&#8217;t exist with shallow
+copy operations:</p>
+<ul class="simple">
+<li>Recursive objects (compound objects that, directly or indirectly, contain a
+reference to themselves) may cause a recursive loop.</li>
+<li>Because deep copy copies <em>everything</em> it may copy too much, e.g.,
+administrative data structures that should be shared even between copies.</li>
+</ul>
+<p>The <a title="copy.deepcopy" class="reference internal" href="#copy.deepcopy"><tt class="xref docutils literal"><span class="pre">deepcopy()</span></tt></a> function avoids these problems by:</p>
+<ul class="simple">
+<li>keeping a &#8220;memo&#8221; dictionary of objects already copied during the current
+copying pass; and</li>
+<li>letting user-defined classes override the copying operation or the set of
+components copied.</li>
+</ul>
+<p>This module does not copy types like module, method, stack trace, stack frame,
+file, socket, window, array, or any similar types.  It does &#8220;copy&#8221; functions and
+classes (shallow and deeply), by returning the original object unchanged; this
+is compatible with the way these are treated by the <a title="Convert Python objects to streams of bytes and back." class="reference external" href="pickle.html#module-pickle"><tt class="xref docutils literal"><span class="pre">pickle</span></tt></a> module.</p>
+<p>Shallow copies of dictionaries can be made using <a title="dict.copy" class="reference external" href="stdtypes.html#dict.copy"><tt class="xref docutils literal"><span class="pre">dict.copy()</span></tt></a>, and
+of lists by assigning a slice of the entire list, for example,
+<tt class="docutils literal"><span class="pre">copied_list</span> <span class="pre">=</span> <span class="pre">original_list[:]</span></tt>.</p>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 2.5: </span>Added copying functions.</p>
+<p id="index-270">Classes can use the same interfaces to control copying that they use to control
+pickling.  See the description of module <a title="Convert Python objects to streams of bytes and back." class="reference external" href="pickle.html#module-pickle"><tt class="xref docutils literal"><span class="pre">pickle</span></tt></a> for information on these
+methods.  The <tt class="xref docutils literal"><span class="pre">copy</span></tt> module does not use the <a title="Register pickle support functions." class="reference external" href="copy_reg.html#module-copy_reg"><tt class="xref docutils literal"><span class="pre">copy_reg</span></tt></a> registration
+module.</p>
+<p id="index-271">In order for a class to define its own copy implementation, it can define
+special methods <tt class="xref docutils literal"><span class="pre">__copy__()</span></tt> and <tt class="xref docutils literal"><span class="pre">__deepcopy__()</span></tt>.  The former is called
+to implement the shallow copy operation; no additional arguments are passed.
+The latter is called to implement the deep copy operation; it is passed one
+argument, the memo dictionary.  If the <tt class="xref docutils literal"><span class="pre">__deepcopy__()</span></tt> implementation needs
+to make a deep copy of a component, it should call the <a title="copy.deepcopy" class="reference internal" href="#copy.deepcopy"><tt class="xref docutils literal"><span class="pre">deepcopy()</span></tt></a> function
+with the component as first argument and the memo dictionary as second argument.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt>Module <a title="Convert Python objects to streams of bytes and back." class="reference external" href="pickle.html#module-pickle"><tt class="xref docutils literal"><span class="pre">pickle</span></tt></a></dt>
+<dd>Discussion of the special methods used to support object state retrieval and
+restoration.</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+      </div>
+
+  </body>
+</html>

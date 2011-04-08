@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>17. Interprocess Communication and Networking &mdash; Python v2.7.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.7.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Python v2.7.1 documentation"
+          href="../_static/opensearch.xml"/>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="copyright" title="Copyright" href="../copyright.html" />
+    <link rel="top" title="Python v2.7.1 documentation" href="../index.html" />
+    <link rel="up" title="The Python Standard Library" href="index.html" />
+    <link rel="next" title="17.1. subprocess — Subprocess management" href="subprocess.html" />
+    <link rel="prev" title="16.9. rlcompleter — Completion function for GNU readline" href="rlcompleter.html" />
+    <link rel="shortcut icon" type="image/png" href="../_static/py.png" />
+ 
+
+  </head>
+  <body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="interprocess-communication-and-networking">
+<span id="ipc"></span><h1>17. Interprocess Communication and Networking<a class="headerlink" href="#interprocess-communication-and-networking" title="Permalink to this headline">¶</a></h1>
+<p>The modules described in this chapter provide mechanisms for different processes
+to communicate.</p>
+<p>Some modules only work for two processes that are on the same machine, e.g.
+<a title="Set handlers for asynchronous events." class="reference external" href="signal.html#module-signal"><tt class="xref docutils literal"><span class="pre">signal</span></tt></a> and <a title="Subprocess management." class="reference external" href="subprocess.html#module-subprocess"><tt class="xref docutils literal"><span class="pre">subprocess</span></tt></a>.  Other modules support networking protocols
+that two or more processes can used to communicate across machines.</p>
+<p>The list of modules described in this chapter is:</p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="subprocess.html">17.1. <tt class="docutils literal"><span class="pre">subprocess</span></tt> &#8212; Subprocess management</a><ul>
+<li class="toctree-l2"><a class="reference external" href="subprocess.html#using-the-subprocess-module">17.1.1. Using the subprocess Module</a><ul>
+<li class="toctree-l3"><a class="reference external" href="subprocess.html#convenience-functions">17.1.1.1. Convenience Functions</a></li>
+<li class="toctree-l3"><a class="reference external" href="subprocess.html#exceptions">17.1.1.2. Exceptions</a></li>
+<li class="toctree-l3"><a class="reference external" href="subprocess.html#security">17.1.1.3. Security</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference external" href="subprocess.html#popen-objects">17.1.2. Popen Objects</a></li>
+<li class="toctree-l2"><a class="reference external" href="subprocess.html#replacing-older-functions-with-the-subprocess-module">17.1.3. Replacing Older Functions with the subprocess Module</a><ul>
+<li class="toctree-l3"><a class="reference external" href="subprocess.html#replacing-bin-sh-shell-backquote">17.1.3.1. Replacing /bin/sh shell backquote</a></li>
+<li class="toctree-l3"><a class="reference external" href="subprocess.html#replacing-shell-pipeline">17.1.3.2. Replacing shell pipeline</a></li>
+<li class="toctree-l3"><a class="reference external" href="subprocess.html#replacing-os-system">17.1.3.3. Replacing <tt class="docutils literal"><span class="pre">os.system()</span></tt></a></li>
+<li class="toctree-l3"><a class="reference external" href="subprocess.html#replacing-the-os-spawn-family">17.1.3.4. Replacing the <tt class="docutils literal"><span class="pre">os.spawn</span></tt> family</a></li>
+<li class="toctree-l3"><a class="reference external" href="subprocess.html#replacing-os-popen-os-popen2-os-popen3">17.1.3.5. Replacing <tt class="docutils literal"><span class="pre">os.popen()</span></tt>, <tt class="docutils literal"><span class="pre">os.popen2()</span></tt>, <tt class="docutils literal"><span class="pre">os.popen3()</span></tt></a></li>
+<li class="toctree-l3"><a class="reference external" href="subprocess.html#replacing-functions-from-the-popen2-module">17.1.3.6. Replacing functions from the <tt class="docutils literal"><span class="pre">popen2</span></tt> module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="socket.html">17.2. <tt class="docutils literal"><span class="pre">socket</span></tt> &#8212; Low-level networking interface</a><ul>
+<li class="toctree-l2"><a class="reference external" href="socket.html#socket-objects">17.2.1. Socket Objects</a></li>
+<li class="toctree-l2"><a class="reference external" href="socket.html#example">17.2.2. Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="ssl.html">17.3. <tt class="docutils literal"><span class="pre">ssl</span></tt> &#8212; SSL wrapper for socket objects</a><ul>
+<li class="toctree-l2"><a class="reference external" href="ssl.html#functions-constants-and-exceptions">17.3.1. Functions, Constants, and Exceptions</a></li>
+<li class="toctree-l2"><a class="reference external" href="ssl.html#sslsocket-objects">17.3.2. SSLSocket Objects</a></li>
+<li class="toctree-l2"><a class="reference external" href="ssl.html#certificates">17.3.3. Certificates</a></li>
+<li class="toctree-l2"><a class="reference external" href="ssl.html#examples">17.3.4. Examples</a><ul>
+<li class="toctree-l3"><a class="reference external" href="ssl.html#testing-for-ssl-support">17.3.4.1. Testing for SSL support</a></li>
+<li class="toctree-l3"><a class="reference external" href="ssl.html#client-side-operation">17.3.4.2. Client-side operation</a></li>
+<li class="toctree-l3"><a class="reference external" href="ssl.html#server-side-operation">17.3.4.3. Server-side operation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="signal.html">17.4. <tt class="docutils literal"><span class="pre">signal</span></tt> &#8212; Set handlers for asynchronous events</a><ul>
+<li class="toctree-l2"><a class="reference external" href="signal.html#example">17.4.1. Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="popen2.html">17.5. <tt class="docutils literal"><span class="pre">popen2</span></tt> &#8212; Subprocesses with accessible I/O streams</a><ul>
+<li class="toctree-l2"><a class="reference external" href="popen2.html#popen3-and-popen4-objects">17.5.1. Popen3 and Popen4 Objects</a></li>
+<li class="toctree-l2"><a class="reference external" href="popen2.html#flow-control-issues">17.5.2. Flow Control Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="asyncore.html">17.6. <tt class="docutils literal"><span class="pre">asyncore</span></tt> &#8212; Asynchronous socket handler</a><ul>
+<li class="toctree-l2"><a class="reference external" href="asyncore.html#asyncore-example-basic-http-client">17.6.1. asyncore Example basic HTTP client</a></li>
+<li class="toctree-l2"><a class="reference external" href="asyncore.html#asyncore-example-basic-echo-server">17.6.2. asyncore Example basic echo server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="asynchat.html">17.7. <tt class="docutils literal"><span class="pre">asynchat</span></tt> &#8212; Asynchronous socket command/response handler</a><ul>
+<li class="toctree-l2"><a class="reference external" href="asynchat.html#asynchat-auxiliary-classes">17.7.1. asynchat - Auxiliary Classes</a></li>
+<li class="toctree-l2"><a class="reference external" href="asynchat.html#asynchat-example">17.7.2. asynchat Example</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+
+          </div>
+      </div>
+
+  </body>
+</html>
