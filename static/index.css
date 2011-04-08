@@ -114,6 +114,9 @@ span.highlight {
   font-weight: bold;
   text-shadow: white 1px 1px 5px;
   top: 4px;
+  right: 10em;
+  overflow: hidden;
+  white-space: nowrap;
   position: absolute;
   left: 250px;
 }
@@ -121,7 +124,7 @@ span.highlight {
 #links {
   position: absolute;
   right: 0px;
-  top: 2px;
+  top: 3px;
 }
 
 #links a {
