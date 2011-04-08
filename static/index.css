@@ -43,20 +43,28 @@ a {
 #searchresults ul {
   list-style-type: none;
   margin: 0px;
-  padding: 3px;
+  padding: 0px;
 }
 
 #searchresults li {
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
   background-repeat: no-repeat;
-  background-position: 0px 0px;
+  background-position: 0px 2px;
   padding-left: 20px;
   padding-top: 2px;
   padding-bottom: 2px;
 }
 
 #searchresults li:hover {
-  background-color: #DDDDFF;
+  background-color: #F5F5FF;
   cursor: pointer;
+}
+
+#searchresults li.selected {
+  background-color: #F0F0FF;
+  border-top: 1px solid #C0C0FF;
+  border-bottom: 1px solid #C0C0FF;
 }
 
 #searchresults li.attribute   { background-image: url(images/var.png); }
@@ -72,6 +80,10 @@ a {
 #searchresults li.function    { background-image: url(images/func.png); }
 #searchresults li.method      { background-image: url(images/func.png); }
 #searchresults li.mod         { background-image: url(images/class.png); }
+
+span.highlight {
+  background-color: #FFFF99;
+}
 
 #content {
   position: absolute;
