@@ -73,8 +73,8 @@ a {
 
 #searchresults li.selected {
   background-color: #F0F0FF;
-  border-top: 1px solid #C0C0FF;
-  border-bottom: 1px solid #C0C0FF;
+  border-top: 1px solid #A0A0FF;
+  border-bottom: 1px solid #A0A0FF;
 }
 
 #searchresults li.attribute   { background-image: url(images/var.png); }
