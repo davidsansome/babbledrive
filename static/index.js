@@ -47,7 +47,7 @@ var SearchController = Class.create({
     // This regex will highlight the search terms in the matches.
     var highlight_regexp = new RegExp("(" + tokens.join("|") + ")", "gi");
 
-    var html = ["", ""];
+    var html = ["", "", "", ""];
     this.result_count = 0;
     this.selected_result = -1;
 
@@ -55,31 +55,42 @@ var SearchController = Class.create({
     for (var i=0 ; i<len && this.result_count<500 ; ++i) {
       var result_name_lower = data[i][0];
 
-      // Does it match the search text?  We want to sort things that match at
-      // the beginning of the string first, so match_type values mean:
-      //  -1 - not at all
-      //   0 - at the beginning
-      //   1 - at the end
-      var match_type = -1;
+      // Does it match the search text?
+      // The rules are:
+      //  * If any token isn't found in the symbol name, abort.
+      //  * Otherwise, for each token increment the score by:
+      //     +2 if the match was at the beginning or after a period
+      //     +1 if the case matched exactly
+      var token_didnt_match = false;
+      var overall_score = 0;
 
-      if (tokens.length == 0) {
-        // If there are no search tokens then display everything.
-        match_type = 0;
-      } else {
+      if (tokens.length > 0) {
         for (var j=0 ; j<tokens_len ; ++j) {
           var index = result_name_lower.indexOf(tokens[j]);
           if (index == -1) {
-            match_type = -1;
+            // If it didn't match at all then short circuit the scoring and
+            // skip the other tokens.
+            token_didnt_match = true;
             break;
-          } else if (index == 0) {
-            match_type = 0;
-          } else if (match_type != 0) {
-            match_type = 1;
           }
+
+          var score = 0;
+
+          // Matched at the beginning or after a period?
+          if (index == 0 || result_name_lower.charAt(index-1) == '.') {
+            score += 2;
+          }
+
+          // Case matched?
+          if (data[i][1].substring(index, index + tokens[j].length) == tokens[j]) {
+            score += 1;
+          }
+
+          overall_score = Math.max(overall_score, score);
         }
 
         // Didn't match?
-        if (match_type == -1)
+        if (token_didnt_match)
           continue;
       }
 
@@ -109,14 +120,14 @@ var SearchController = Class.create({
       ++this.result_count;
 
       // Add to the HTML
-      html[match_type] += '<li class="' + result.type + '">' +
-                          '<a target="contentframe" href="' + result.url + '">' +
-                          highlighted_name + '</a></li>';
+      html[overall_score] += '<li class="' + result.type + '">' +
+                             '<a target="contentframe" href="' + result.url + '">' +
+                             highlighted_name + '</a></li>';
     }
 
     // Make the list and insert it into the DOM
     var ul = new Element("ul");
-    ul.innerHTML = html[0] + html[1];
+    ul.innerHTML = html[3] + html[2] + html[1] + html[0];
     ul.observe('click', this.result_clicked.bind(this));
 
     this.results_element.update(ul);
