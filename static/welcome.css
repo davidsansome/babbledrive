@@ -1,7 +1,8 @@
 body {
-  background: #627d4d; /* old browsers */
-  background: -moz-linear-gradient(top, #627d4d 0%, #1f3b08 100%); /* firefox */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#627d4d), color-stop(100%,#1f3b08)); /* webkit */
+  background: #1f3b08; /* old browsers */
+  background-image: -moz-linear-gradient(top, #627d4d 0%, #1f3b08 100%); /* firefox */
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#627d4d), color-stop(100%,#1f3b08)); /* webkit */
+  background-repeat: no-repeat;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#627d4d', endColorstr='#1f3b08',GradientType=0 ); /* ie */
 
   font-family: sans-serif;
