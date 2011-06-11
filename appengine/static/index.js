@@ -3,6 +3,7 @@ var Library = Class.create({
   DOC_TYPE_EPYDOC: 1,
 
   initialize: function() {
+    // The list of available packages
     this.PACKAGES = [
       ["python",      this.DOC_TYPE_SPHINX, ["2.7.1"]],
       ["pyinotify",   this.DOC_TYPE_EPYDOC, ["0.9.2"]],
@@ -10,24 +11,40 @@ var Library = Class.create({
       ["dbus-python", this.DOC_TYPE_EPYDOC, ["0.84.0"]]
     ];
 
+    // Holds the search index for each package - populated asyncronously by
+    // the package data files that call register_package_data.
     this.package_data = {};
+
+    // The list of packages the user wants to see in his search results.
     this.selected_packages = ["python-2.7.1", "pyinotify-0.9.2", "simplejson-2.1.6", "dbus-python-0.84.0"];
 
-    this.selected_packages.each(function(package) {
-      var script = new Element('script', {
-        'language': 'javascript',
-        'src': '/static/data/' + package + '.js'
-      });
-      $$('body')[0].appendChild(script);
+    // The number of packages still being loaded.
+    this.packages_pending_load = 0;
+
+    // Start loading the data for each package.
+    this.selected_packages.each(this.load_package.bind(this));
+  },
+
+  load_package: function(nameversion) {
+    this.packages_pending_load ++;
+    var script = new Element('script', {
+      'language': 'javascript',
+      'src': '/static/data/' + nameversion + '.js'
     });
+    $$('body')[0].appendChild(script);
   },
 
   register_package_data: function(nameversion, data) {
     this.package_data[nameversion] = data;
+    this.packages_pending_load --;
+
+    if (this.packages_pending_load == 0) {
+      Event.fire(document, 'library:all_packages_loaded');
+    }
   },
 
   package_doc_type: function(nameversion) {
-    var name = nameversion.substr(0, nameversion.indexOf("-"));
+    var name = nameversion.substr(0, nameversion.lastIndexOf("-"));
     var data = this.PACKAGES.find(function(x) { return x[0] == name; });
     return data[1];
   }
@@ -63,6 +80,11 @@ var SearchController = Class.create({
     this.content_element.observe('load', this.content_frame_changed.bind(this));
     this.content_frame_changed();
 
+    // Listen for an event when all library packages have been loaded.
+    document.observe('library:all_packages_loaded', this.all_packages_loaded.bind(this));
+  },
+
+  all_packages_loaded: function(event) {
     // Browse to the page the user put in the hash part of the URL.
     if (window.location.hash) {
       this.browse_to(window.location.hash);
