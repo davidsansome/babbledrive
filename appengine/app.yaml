@@ -3,7 +3,18 @@ version: dev
 runtime: python
 api_version: 1
 
+inbound_services:
+- warmup
+
 handlers:
+- url: /static/doc
+  static_dir: static/doc
+  expiration: 28d
+
+- url: /static/data
+  static_dir: static/data
+  expiration: 28d
+
 - url: /static
   static_dir: static
 
