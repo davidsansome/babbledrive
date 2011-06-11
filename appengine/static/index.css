@@ -34,14 +34,16 @@ a {
 #search {
   margin: 0px;
   border: 1px solid #C0C0FF;
+  background: url(images/search.png) left no-repeat;
   width: 100%;
-  padding-left: 2px;
+  height: 22px;
+  padding-left: 18px;
   padding-right: 2px;
 }
 
 #searchresults {
   position: absolute;
-  top: 20px;
+  top: 22px;
   bottom: 0px;
   left: 0px;
   width: 249px;
@@ -112,7 +114,7 @@ span.highlight {
 #contentheader {
   color: black;
   font-weight: bold;
-  text-shadow: white 1px 1px 5px;
+  text-shadow: rgba(0, 0, 0, 0.3) 1px 1px 5px;
   top: 4px;
   right: 10em;
   overflow: hidden;
@@ -130,5 +132,99 @@ span.highlight {
 #links a {
   margin-right: 0.75em;
   color: #336ac9;
+}
+
+#libraryheader {
+  left: 0px;
+  top: 0px;
+  height: 25px;
+  width: 220px;
+}
+
+#libraryheader.down {
+  background-color: #ffd65e;
+}
+
+#librarybutton {
+  background: url(images/library.png) 4px 4px no-repeat;
+  color: rgba(0, 0, 0, 0.5);
+  padding-left: 22px;
+  padding-top: 4px;
+
+  height: 25px;
+}
+
+#librarybutton:hover, #libraryheader.down #librarybutton {
+  cursor: pointer;
+  color: black;
+  text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 5px;
+}
+
+#library {
+  position: absolute;
+  z-index: 100;
+  top: 25px;
+  left: 0px;
+  width: 600px;
+  height: 300px;
+  padding: 0px 1em 1em 1em;
+
+  background: #ffd65e;
+  background: -moz-linear-gradient(top, #ffd65e 0%, #febf04 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd65e), color-stop(100%,#febf04));
+  background: -webkit-linear-gradient(top, #ffd65e 0%,#febf04 100%);
+  background: -o-linear-gradient(top, #ffd65e 0%,#febf04 100%);
+  background: -ms-linear-gradient(top, #ffd65e 0%,#febf04 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd65e', endColorstr='#febf04',GradientType=0 );
+  background: linear-gradient(top, #ffd65e 0%,#febf04 100%);
+
+  border-bottom-right-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 40px;
+  clip: rect(0px, 650px, 350px, 0px);
+}
+
+#librarycontents {
+  overflow: auto;
+  height: 253px;
+}
+
+#library .package {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.25em;
+  padding: 0.1em;
+  height: 22px;
+  opacity: 0.5;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#library .package.enabled {
+  opacity: 1.0;
+  font-weight: bold;
+  text-shadow: rgba(0, 0, 0, 0.3) 1px 1px 5px;
+}
+
+#library .package:hover {
+  opacity: 1.0;
+}
+
+#library .package input {
+  cursor: pointer;
+  vertical-align: middle;
+  width: 24px;
+  height: 22px;
+  margin: 0px;
+}
+
+#library .package .name {
+  vertical-align: middle;
+}
+
+#library .package .version {
+  vertical-align: middle;
+  margin-left: 0.5em;
+  font-weight: normal;
+  opacity: 0.5;
 }
 

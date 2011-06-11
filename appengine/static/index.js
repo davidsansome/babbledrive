@@ -2,13 +2,20 @@ var Library = Class.create({
   DOC_TYPE_SPHINX: 0,
   DOC_TYPE_EPYDOC: 1,
 
-  initialize: function() {
+  initialize: function(header_element, button_element, library_element,
+                       contents_element) {
+    this.header_element = header_element;
+    this.button_element = button_element;
+    this.library_element = library_element;
+    this.contents_element = contents_element;
+
     // The list of available packages
     this.PACKAGES = [
       ["python",      this.DOC_TYPE_SPHINX, ["2.7.1"]],
       ["pyinotify",   this.DOC_TYPE_EPYDOC, ["0.9.2"]],
       ["simplejson",  this.DOC_TYPE_SPHINX, ["2.1.6"]],
-      ["dbus-python", this.DOC_TYPE_EPYDOC, ["0.84.0"]]
+      ["dbus-python", this.DOC_TYPE_EPYDOC, ["0.84.0"]],
+      ["paramiko",    this.DOC_TYPE_EPYDOC, ["1.7.6"]]
     ];
 
     // Holds the search index for each package - populated asyncronously by
@@ -16,13 +23,119 @@ var Library = Class.create({
     this.package_data = {};
 
     // The list of packages the user wants to see in his search results.
-    this.selected_packages = ["python-2.7.1", "pyinotify-0.9.2", "simplejson-2.1.6", "dbus-python-0.84.0"];
+    this.selected_packages = ["python-2.7.1", "pyinotify-0.9.2",
+                              "simplejson-2.1.6", "dbus-python-0.84.0",
+                              "paramiko-1.7.6"];
 
     // The number of packages still being loaded.
     this.packages_pending_load = 0;
 
+    // Set up the library button
+    this.button_element.observe('click', this.button_clicked.bind(this));
+    this.populate_list();
+    this.update_button();
+
     // Start loading the data for each package.
     this.selected_packages.each(this.load_package.bind(this));
+  },
+
+  populate_list: function() {
+    this.PACKAGES.sort().each(function(package) {
+      var version = this.package_version(package[0]);
+      var div_class = "package";
+      if (version)
+        div_class += " enabled";
+
+      var checkbox = new Element("input", {"type": "checkbox"});
+      checkbox.checked = (version != null);
+
+      var name = new Element("span", {"class": "name"});
+      name.update(package[0]);
+
+      var version = new Element("span", {"class": "version"});
+      version.update(package[2][0]);
+
+      var div = new Element("div", {"class": div_class});
+      div.appendChild(checkbox);
+      div.appendChild(name);
+      div.appendChild(version);
+
+      div.package = package;
+      div.observe("click", this.package_clicked.bind(this));
+
+      this.contents_element.appendChild(div);
+    }.bind(this));
+  },
+
+  update_button: function() {
+    var button_text;
+
+    // Find the python version that's selected
+    var python_version = this.package_version("python");
+    if (python_version) {
+      button_text = "Python " + python_version;
+
+      var others_count = this.selected_packages.length - 1;
+      if (others_count) {
+        button_text += " and " + others_count + " others";
+      }
+    } else {
+      var count = this.selected_packages.length;
+
+      if (count == 0) {
+        button_text = "Click to choose packages";
+      } else {
+        button_text = "" + count + " packages";
+      }
+    }
+
+    this.button_element.innerHTML = button_text;
+  },
+
+  button_clicked: function() {
+    if (this.library_element.visible()) {
+      this.header_element.removeClassName("down");
+      this.library_element.hide();
+    } else {
+      this.header_element.addClassName("down");
+      this.library_element.show();
+    }
+  },
+
+  package_clicked: function(event) {
+    var div = Event.findElement(event, "div.package");
+    var checkbox = div.select("input")[0];
+
+    if (div.hasClassName("enabled")) {
+      // Uncheck the page element
+      div.removeClassName("enabled");
+      checkbox.checked = false;
+
+      // Remove from the selected packages list
+      var nameversion = this.package_nameversion(div.package[0]);
+      this.selected_packages = this.selected_packages.reject(function(x) {
+        return x == nameversion;
+      });
+    } else {
+      // Check the page element
+      div.addClassName("enabled");
+      checkbox.checked = true;
+
+      // Add to the selected packages list
+      var nameversion = div.package[0] + "-" + div.package[2][0];
+      this.selected_packages.push(nameversion);
+
+      // Load the package data if it's not loaded already
+      if (this.package_data[nameversion] == undefined) {
+        this.load_package(nameversion);
+      }
+    }
+
+    // Update the text on the button
+    this.update_button();
+
+    // Refresh the list
+    Event.fire(document, 'library:package_toggled');
   },
 
   load_package: function(nameversion) {
@@ -47,6 +160,19 @@ var Library = Class.create({
     var name = nameversion.substr(0, nameversion.lastIndexOf("-"));
     var data = this.PACKAGES.find(function(x) { return x[0] == name; });
     return data[1];
+  },
+
+  package_nameversion: function(name) {
+    return this.selected_packages.find(function(x) {
+      return x.indexOf(name + "-") == 0;
+    });
+  },
+
+  package_version: function(name) {
+    var nameversion = this.package_nameversion(name);
+    if (!nameversion)
+      return null;
+    return nameversion.substr(name.length + 1)
   }
 });
 
@@ -82,6 +208,7 @@ var SearchController = Class.create({
 
     // Listen for an event when all library packages have been loaded.
     document.observe('library:all_packages_loaded', this.all_packages_loaded.bind(this));
+    document.observe('library:package_toggled', this.package_toggled.bind(this));
   },
 
   all_packages_loaded: function(event) {
@@ -96,13 +223,17 @@ var SearchController = Class.create({
     this.input_element.focus();
   },
 
+  package_toggled: function(event) {
+    this.search(this.search_text, true, true);
+  },
+
   input_changed: function(event) {
     this.search(this.input_element.value, true);
   },
 
-  search: function(search_text, highlight) {
+  search: function(search_text, highlight, force_refresh) {
     // Don't do anything if the text wasn't changed since last time.
-    if (search_text == this.search_text)
+    if (search_text == this.search_text && force_refresh != true)
       return;
     this.search_text = search_text;
     this.selected_result = -1;
@@ -448,7 +579,8 @@ var controller;
 var library;
 
 Event.observe(window, 'load', function() {
-  library = new Library();
+  library = new Library(
+    $("libraryheader"), $("librarybutton"), $("library"), $("librarycontents"));
   controller = new SearchController(library,
     $("search"), $("searchresults"), $("contentframe"), $("contentheader"));
 });

@@ -18,7 +18,7 @@ def main():
 
   # Parse options
   parser = optparse.OptionParser(usage=USAGE)
-  parser.add_option("-v", "--verbose", dest="verbose")
+  parser.add_option("-v", "--verbose", dest="verbose", action="store_true")
   options, args = parser.parse_args(sys.argv[1:])
 
   package_name = None
