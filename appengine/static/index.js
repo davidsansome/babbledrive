@@ -4,12 +4,14 @@ var Library = Class.create({
 
   initialize: function() {
     this.PACKAGES = [
-      ["python",    this.DOC_TYPE_SPHINX, ["2.7.1"]],
-      ["pyinotify", this.DOC_TYPE_EPYDOC, ["0.9.2"]]
+      ["python",      this.DOC_TYPE_SPHINX, ["2.7.1"]],
+      ["pyinotify",   this.DOC_TYPE_EPYDOC, ["0.9.2"]],
+      ["simplejson",  this.DOC_TYPE_SPHINX, ["2.1.6"]],
+      ["dbus-python", this.DOC_TYPE_EPYDOC, ["0.84.0"]]
     ];
 
     this.package_data = {};
-    this.selected_packages = ["python-2.7.1", "pyinotify-0.9.2"];
+    this.selected_packages = ["python-2.7.1", "pyinotify-0.9.2", "simplejson-2.1.6", "dbus-python-0.84.0"];
 
     this.selected_packages.each(function(package) {
       var script = new Element('script', {

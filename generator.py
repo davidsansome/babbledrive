@@ -47,6 +47,9 @@ class Generator(object):
     "py:method": 7,
   }
 
+  # Set by main.py
+  OPTIONS = None
+
   def __init__(self, name, version):
     self.name = name
     self.version = version
@@ -126,12 +129,23 @@ class Generator(object):
   def Run(self, args, **kwargs):
     self.logger.info("running %s" % " ".join(args))
 
-    kwargs["env"] = self._env
+    kwargs.update({
+      "env":    self._env,
+    })
+
+    if not self.OPTIONS.verbose:
+      kwargs.update({
+        "stdout": subprocess.PIPE,
+        "stderr": subprocess.STDOUT,
+      })
 
     handle = subprocess.Popen(args, **kwargs)
-    handle.wait()
+    stdout = handle.communicate()[0]
 
     if handle.returncode != 0:
+      if not self.OPTIONS.verbose:
+        print >> sys.stderr, stdout
+
       raise GeneratorError("Command '%s' exited with status %d" % (
         args[0], handle.returncode))
 
@@ -213,6 +227,13 @@ class Generator(object):
 
     # Sort the list by name
     items = sorted(items, key=operator.itemgetter(0))
+
+    # Remove old output
+    self.logger.info("removing old data")
+    if os.path.exists(self.output_data):
+      os.remove(self.output_data)
+    if os.path.exists(self.output_doc):
+      shutil.rmtree(self.output_doc)
 
     # Write out the data file
     self.logger.info("installing %s" % self.output_data)
