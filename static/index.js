@@ -1,13 +1,55 @@
-var SearchController = Class.create({
-  BASE_URL: "static/doc/2.7.1/",
+var Library = Class.create({
+  DOC_TYPE_SPHINX: 0,
+  DOC_TYPE_EPYDOC: 1,
 
-  initialize: function(input_element, results_element, content_element, header_element) {
+  initialize: function() {
+    this.PACKAGES = [
+      ["python",    this.DOC_TYPE_SPHINX, ["2.7.1"]],
+      ["pyinotify", this.DOC_TYPE_EPYDOC, ["0.9.2"]]
+    ];
+
+    this.package_data = {};
+    this.selected_packages = ["python-2.7.1", "pyinotify-0.9.2"];
+
+    this.selected_packages.each(function(package) {
+      var script = new Element('script', {
+        'language': 'javascript',
+        'src': '/static/data/' + package + '.js'
+      });
+      $$('body')[0].appendChild(script);
+    });
+  },
+
+  register_package_data: function(nameversion, data) {
+    this.package_data[nameversion] = data;
+  },
+
+  package_doc_type: function(nameversion) {
+    var name = nameversion.substr(0, nameversion.indexOf("-"));
+    var data = this.PACKAGES.find(function(x) { return x[0] == name; });
+    return data[1];
+  }
+});
+
+
+var SearchController = Class.create({
+  BASE_URL: "static/doc/",
+  TYPE_SORT_ORDER: [5, 4, 4, 4, 3, 2, 2, 2, 2, 1, 1, 1, 1],
+  TYPE_CSS_CLASS:  ["mod", "class", "exception", "ctype", "cmacro",
+                    "classmethod", "function", "method", "cfunction",
+                    "data", "attribute", "cvar", "cmember"],
+
+  initialize: function(library, input_element, results_element,
+                       content_element, header_element) {
+    this.library = library;
     this.input_element = input_element;
     this.results_element = results_element;
     this.content_element = content_element;
     this.header_element = header_element;
 
     this.ignore_next_hash_change = false;
+
+    this.result_count = 0;
 
     // Listen for key events on the input box.
     this.input_element.observe('keyup', this.input_changed.bind(this));
@@ -39,6 +81,8 @@ var SearchController = Class.create({
     if (search_text == this.search_text)
       return;
     this.search_text = search_text;
+    this.selected_result = -1;
+    this.result_count = 0;
 
     // Split the text into tokens, ignoring empty ones.
     var tokens = search_text.toLowerCase().split(" ").reject(function(x) { return x.blank(); });
@@ -47,89 +91,110 @@ var SearchController = Class.create({
     // This regex will highlight the search terms in the matches.
     var highlight_regexp = new RegExp("(" + tokens.join("|") + ")", "gi");
 
-    var html = ["", "", "", ""];
-    this.result_count = 0;
-    this.selected_result = -1;
+    // Store results in here.
+    var results = [];
 
-    var len = data.length;
-    for (var i=0 ; i<len && this.result_count<500 ; ++i) {
-      var result_name_lower = data[i][0];
+    var packages_count = this.library.selected_packages.length;
+    for (var i=0 ; i<packages_count ; ++i) {
+      var package = this.library.selected_packages[i];
+      var data = this.library.package_data[package];
+      if (data == undefined) {
+        continue;
+      }
 
-      // Does it match the search text?
-      // The rules are:
-      //  * If any token isn't found in the symbol name, abort.
-      //  * Otherwise, for each token increment the score by:
-      //     +2 if the match was at the beginning or after a period
-      //     +1 if the case matched exactly
-      var token_didnt_match = false;
-      var overall_score = 0;
+      var package_base_url = this.BASE_URL + package + "/";
 
-      if (tokens.length > 0) {
-        for (var j=0 ; j<tokens_len ; ++j) {
-          var index = result_name_lower.indexOf(tokens[j]);
-          if (index == -1) {
-            // If it didn't match at all then short circuit the scoring and
-            // skip the other tokens.
-            token_didnt_match = true;
-            break;
+      var len = data.length;
+      for (var j=0 ; j<len && results.length<500 ; ++j) {
+        var result_name_lower = data[j][0];
+
+        // Does it match the search text?
+        // The rules are:
+        //  * If any token isn't found in the symbol name, abort.
+        //  * Otherwise, for each token increment the score by:
+        //     +2 if the match was at the beginning or after a period
+        //     +1 if the case matched exactly
+        var token_didnt_match = false;
+        var overall_score = 0;
+
+        if (tokens.length > 0) {
+          for (var k=0 ; k<tokens_len ; ++k) {
+            var index = result_name_lower.indexOf(tokens[k]);
+            if (index == -1) {
+              // If it didn't match at all then short circuit the scoring and
+              // skip the other tokens.
+              token_didnt_match = true;
+              break;
+            }
+
+            var score = 0;
+
+            // Matched at the beginning or after a period?
+            if (index == 0 || result_name_lower.charAt(index-1) == '.') {
+              score += 2;
+            }
+
+            // Case matched?
+            if (data[j][1].substring(index, index + tokens[k].length) == tokens[k]) {
+              score += 1;
+            }
+
+            overall_score = Math.max(overall_score, score);
           }
 
-          var score = 0;
-
-          // Matched at the beginning or after a period?
-          if (index == 0 || result_name_lower.charAt(index-1) == '.') {
-            score += 2;
-          }
-
-          // Case matched?
-          if (data[i][1].substring(index, index + tokens[j].length) == tokens[j]) {
-            score += 1;
-          }
-
-          overall_score = Math.max(overall_score, score);
+          // Didn't match?
+          if (token_didnt_match)
+            continue;
         }
 
-        // Didn't match?
-        if (token_didnt_match)
-          continue;
+        // Get information about this symbol
+        var result = {
+          name:        data[j][1],
+          type:        data[j][2],
+          destination: data[j][3],
+        };
+
+        // Highlight the search terms in the result
+        var highlighted_name = result.name;
+        if (highlight && tokens.length != 0) {
+          highlighted_name = highlighted_name.replace(
+            highlight_regexp, '<span class="highlight">$1</span>');
+        }
+
+        // Construct the URL
+        result.url = package_base_url + result.destination;
+
+        // Add to the list of results
+        var html = '<li class="' + this.TYPE_CSS_CLASS[result.type] + '">' +
+                   '<a target="contentframe" href="' + result.url + '">' +
+                   highlighted_name + '</a></li>';
+
+        results.push([
+          overall_score * 10 + this.TYPE_SORT_ORDER[result.type],
+          result_name_lower,
+          html
+        ]);
       }
-
-      // Get information about this symbol
-      var result = {
-        name:        data[i][1],
-        type:        data[i][2],
-        destination: data[i][3],
-      };
-
-      result.anchor = result.name;
-      if (result.type == "mod") {
-        result.anchor = "module-" + result.name;
-      }
-
-      // Highlight the search terms in the result
-      var highlighted_name = result.name;
-      if (highlight && tokens.length != 0) {
-        highlighted_name = highlighted_name.replace(
-          highlight_regexp, '<span class="highlight">$1</span>');
-      }
-
-      // Construct the URL
-      result.url = this.BASE_URL + result.destination + '#' + result.anchor;
-
-      // Add to the list of results
-      ++this.result_count;
-
-      // Add to the HTML
-      html[overall_score] += '<li class="' + result.type + '">' +
-                             '<a target="contentframe" href="' + result.url + '">' +
-                             highlighted_name + '</a></li>';
     }
 
+    // Sort all results by score, then alphabetically
+    results.sort(function(a, b) {
+      if (a[0] < b[0]) return 1;
+      if (a[0] > b[0]) return -1;
+      return (a[1] < b[1]) ? -1 : (a[1] > b[1]) ? 1 : 0;
+    });
+
     // Make the list and insert it into the DOM
+    var html = "";
+    results.each(function(result) {
+      html += result[2];
+    });
+
     var ul = new Element("ul");
-    ul.innerHTML = html[3] + html[2] + html[1] + html[0];
+    ul.innerHTML = html;
     ul.observe('click', this.result_clicked.bind(this));
 
+    this.result_count = results.length;
     this.results_element.update(ul);
   },
 
@@ -259,22 +324,58 @@ var SearchController = Class.create({
   },
 
   content_hash_changed: function(event) {
-    var name = this.content_element.contentWindow.location.hash;
-    if (!name)
+    var path = this.content_element.contentWindow.location.pathname;
+    var hash = this.content_element.contentWindow.location.hash;
+
+    var path_regex = new RegExp("doc/([^/]+)/(.*)");
+    var match = path_regex.exec(path);
+
+    if (!match)
       return;
 
-    // Take any module- prefix off module names.
-    if (name.startsWith("#module-"))
-      name = "#" + name.substring(8);
+    var nameversion = match[1];
+    var page = match[2];
 
-    window.history.replaceState(name, "", name);
+    // Get the type of this package - how we handle URLs differs between
+    // documentation systems
+    var doc_type = this.library.package_doc_type(nameversion);
+
+    var new_hash;
+    if (doc_type == this.library.DOC_TYPE_SPHINX) {
+      // All sphinx links have hashes
+      if (!hash) {
+        return;
+      }
+
+      // Take any module- prefix off module names.
+      if (hash.startsWith("#module-"))
+        new_hash = "#" + hash.substring(8);
+      else
+        new_hash = hash;
+    } else if (doc_type == this.library.DOC_TYPE_EPYDOC) {
+      // Epydoc links are the page name + "." + hash
+      var dash = page.lastIndexOf("-");
+      if (dash != -1) {
+        page = page.substr(0, dash);
+      }
+
+      new_hash = "#" + page;
+      if (hash) {
+        new_hash += "." + hash.substr(1)
+      }
+    } else {
+      // Unknown doc type
+      return;
+    }
+
+    window.history.replaceState(new_hash, "", new_hash);
 
     if (this.ignore_next_hash_change) {
       this.ignore_next_hash_change = false;
       return;
     }
 
-    this.browse_to(name);
+    this.browse_to(new_hash);
   },
 
   browse_to: function(name) {
@@ -287,31 +388,43 @@ var SearchController = Class.create({
       top_level_symbol = top_level_symbol.substring(0, top_level_symbol.indexOf("."));
 
     // Try to find a documentation entry with this name
-    var len = data.length;
-    for (var i=0 ; i<len ; ++i) {
-      if (data[i][1] != name)
+    var packages_count = this.library.selected_packages.length;
+    for (var i=0 ; i<packages_count ; ++i) {
+      var package = this.library.selected_packages[i];
+      var data = this.library.package_data[package];
+      if (data == undefined) {
         continue;
-
-      // Got one - do a search for the top-level symbol
-      this.search(top_level_symbol, false);
-
-      // Now select the right search result
-      var results = this.results_element.select("li");
-      var results_len = results.length;
-      for (var j=0 ; j<results_len ; ++j) {
-        if (results[j].down().innerText == name) {
-          this.set_selection(j);
-          break;
-        }
       }
 
-      break;
+      var len = data.length;
+      for (var j=0 ; j<len ; ++j) {
+        if (data[j][1] != name)
+          continue;
+
+        // Got one - do a search for the top-level symbol
+        this.search(top_level_symbol, false);
+
+        // Now select the right search result
+        var results = this.results_element.select("li");
+        var results_len = results.length;
+        for (var j=0 ; j<results_len ; ++j) {
+          if (results[j].down().innerText == name) {
+            this.set_selection(j);
+            break;
+          }
+        }
+
+        return;
+      }
     }
   }
 });
 
 var controller;
+var library;
+
 Event.observe(window, 'load', function() {
-  controller = new SearchController(
+  library = new Library();
+  controller = new SearchController(library,
     $("search"), $("searchresults"), $("contentframe"), $("contentheader"));
 });
