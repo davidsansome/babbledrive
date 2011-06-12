@@ -15,7 +15,9 @@ var Library = Class.create({
       ["pyinotify",   this.DOC_TYPE_EPYDOC, ["0.9.2"]],
       ["simplejson",  this.DOC_TYPE_SPHINX, ["2.1.6"]],
       ["dbus-python", this.DOC_TYPE_EPYDOC, ["0.84.0"]],
-      ["paramiko",    this.DOC_TYPE_EPYDOC, ["1.7.6"]]
+      ["paramiko",    this.DOC_TYPE_EPYDOC, ["1.7.6"]],
+      ["lxml",        this.DOC_TYPE_EPYDOC, ["2.3"]],
+      ["sqlalchemy",  this.DOC_TYPE_SPHINX, ["0.7.1"]]
     ];
 
     // Holds the search index for each package - populated asyncronously by

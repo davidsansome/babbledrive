@@ -44,8 +44,13 @@ class Generator(object):
     "std:label": None,
     "py:module": 0,
     "py:class": 1,
+    "py:exception": 2,
+    "py:staticmethod": 5,
+    "py:classmethod": 5,
     "py:function": 6,
     "py:method": 7,
+    "py:data": 9,
+    "py:attribute": 10,
   }
 
   # Set by main.py
