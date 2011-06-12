@@ -1,3 +1,4 @@
+import glob
 import json
 import logging
 import operator
@@ -160,6 +161,19 @@ class Generator(object):
     data = open(babbledrive_data).read()
     data = data.replace(self.EPYDOC_MAGIC, "%s-%s" % (self.name, self.version))
     open(babbledrive_data, 'w').write(data)
+
+    # Replace references to epydoc.css or epydoc.js in the html files
+    for filename in glob.glob(os.path.join(path, "*.html")):
+      data = open(filename).read()
+      data = re.sub(r'(epydoc.(css|js))', r'../../\1', data)
+      data = re.sub(r'(crarr.png)', r'../../images/\1', data)
+      open(filename, 'w').write(data)
+
+    # Remove shared files
+    for filename in ["epydoc.css", "epydoc.js", "crarr.png"]:
+      filepath = os.path.join(path, filename)
+      if os.path.exists(filepath):
+        os.remove(filepath)
 
     # Remove old output
     self.logger.info("removing old data")
