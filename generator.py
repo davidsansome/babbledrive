@@ -41,7 +41,6 @@ class Generator(object):
     "cmember": 12,
 
     # Sphinx version 2
-    "std:label": None,
     "py:module": 0,
     "py:class": 1,
     "py:exception": 2,
@@ -211,11 +210,12 @@ class Generator(object):
     if self.SPHINX_ZLIB_MARKER in data:
       start = data.index(self.SPHINX_ZLIB_MARKER) + len(self.SPHINX_ZLIB_MARKER)
       data = zlib.decompress(data[start:])
+      print data
 
     # Process each line
     for line in data.split("\n"):
       line = line.strip()
-      if not line or line.startswith("#"):
+      if not line or line.startswith("#") or " std:" in line:
         continue
 
       fields = line.split(" ")

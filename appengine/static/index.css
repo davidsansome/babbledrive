@@ -223,19 +223,19 @@ span.highlight {
   margin-bottom: 0.25em;
   padding: 0.1em;
   height: 22px;
-  opacity: 0.5;
+  opacity: 0.75;
   border-radius: 4px;
   cursor: pointer;
 }
 
-#library .package.enabled {
+#library .package.enabled, #library .package:hover {
   opacity: 1.0;
-  font-weight: bold;
-  text-shadow: rgba(0, 0, 0, 0.3) 1px 1px 5px;
+  background: rgba(255, 255, 255, 0.5);
 }
 
-#library .package:hover {
-  opacity: 1.0;
+#library .package.enabled {
+  font-weight: bold;
+  text-shadow: rgba(0, 0, 0, 0.3) 1px 1px 5px;
 }
 
 #library .package input {
