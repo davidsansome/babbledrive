@@ -2494,7 +2494,7 @@ class HTMLWriter:
 
             value = val.value
             if isinstance(value, (ModuleDoc, ClassDoc, type(UNKNOWN))):
-                pass
+                return
             elif isinstance(value, ClassMethodDoc):
                 doc_type = 5 # classmethod
             elif isinstance(value, StaticMethodDoc):
