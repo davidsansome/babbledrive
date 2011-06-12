@@ -141,6 +141,12 @@ span.highlight {
   color: #336ac9;
 }
 
+#links .username {
+  margin-right: 0.75em;
+  color: #336ac9;
+  opacity: 0.5;
+}
+
 #libraryheader {
   left: 0px;
   top: 0px;
@@ -198,6 +204,12 @@ span.highlight {
   border-bottom-right-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 40px;
   clip: rect(0px, 650px, 350px, 0px);
+}
+
+#library a {
+  color: #0094ff;
+  text-shadow: #b1c8ef 1px 1px 5px;
+  font-weight: bold;
 }
 
 #librarycontents {

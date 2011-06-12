@@ -1,6 +1,9 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="static/index.css" />
+  <script>
+    var user_info = {{ user_info|safe }};
+  </script>
   <script language="javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js"></script>
   <script language="javascript" src="static/index.js"></script>
   <title>babbledrive</title>
@@ -16,6 +19,12 @@
   </div>
   <div id="contentheader"></div>
   <div id="links">
+    {% if is_logged_in %}
+      <span class="username">{{ nickname|escape }}</span>
+      <a href="{{ logout_url|escape }}">sign out</a>
+    {% else %}
+      <a href="{{ login_url|escape }}">sign in</a>
+    {% endif %}
     <a href="static/welcome.html" target="contentframe">welcome</a>
     <a href="https://github.com/davidsansome/babbledrive">source</a>
   </div>
@@ -31,7 +40,11 @@
 </div>
 
 <div id="library" style="display: none;">
-  <p>Choose the documentation you want to see in the search results</p>
+  <p>Choose the documentation you want to see in the search results.
+    {% if not is_logged_in %}
+      <a href="{{ login_url|escape }}">Sign in</a> to save.
+    {% endif %}
+  </p>
   <div id="librarycontents"></div>
 </div>
 

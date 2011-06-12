@@ -24,5 +24,8 @@ handlers:
   upload: static/favicon.ico
   expiration: 28d
 
+- url: /api/.*
+  script: index.py
+
 - url: /
   script: index.py

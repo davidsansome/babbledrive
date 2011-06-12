@@ -23,9 +23,7 @@ var Library = Class.create({
     this.package_data = {};
 
     // The list of packages the user wants to see in his search results.
-    this.selected_packages = ["python-2.7.1", "pyinotify-0.9.2",
-                              "simplejson-2.1.6", "dbus-python-0.84.0",
-                              "paramiko-1.7.6"];
+    this.selected_packages = user_info.selected_packages;
 
     // The number of packages still being loaded.
     this.packages_pending_load = 0;
@@ -136,6 +134,8 @@ var Library = Class.create({
 
     // Refresh the list
     Event.fire(document, 'library:package_toggled');
+
+    this.save_selected_packages();
   },
 
   load_package: function(nameversion) {
@@ -173,6 +173,18 @@ var Library = Class.create({
     if (!nameversion)
       return null;
     return nameversion.substr(name.length + 1)
+  },
+
+  save_selected_packages: function() {
+    if (user_info.email == null) {
+      return;
+    }
+
+    new Ajax.Request('/api/save', {
+      parameters: {
+        selected_packages: Object.toJSON(this.selected_packages)
+      }
+    });
   }
 });
 
