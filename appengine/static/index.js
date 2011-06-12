@@ -552,39 +552,49 @@ var SearchController = Class.create({
     // Take the # off
     name = name.substring(1);
 
-    // Find the top-level symbol name.
-    var top_level_symbol = name;
-    if (top_level_symbol.indexOf(".") != -1)
-      top_level_symbol = top_level_symbol.substring(0, top_level_symbol.indexOf("."));
-
-    // Try to find a documentation entry with this name
-    var packages_count = this.library.selected_packages.length;
-    for (var i=0 ; i<packages_count ; ++i) {
-      var package = this.library.selected_packages[i];
-      var data = this.library.package_data[package];
-      if (data == undefined) {
-        continue;
+    // Strip components off the symbol name until we find something we have in
+    // a documentation index.
+    var symbol = name;
+    while (true) {
+      // Strip off one component
+      var dot = symbol.lastIndexOf(".");
+      if (dot != -1) {
+        symbol = symbol.substring(0, dot);
       }
 
-      var len = data.length;
-      for (var j=0 ; j<len ; ++j) {
-        if (data[j][1] != name)
+      // Try to find a documentation entry with this name
+      var packages_count = this.library.selected_packages.length;
+      for (var i=0 ; i<packages_count ; ++i) {
+        var package = this.library.selected_packages[i];
+        var data = this.library.package_data[package];
+        if (data == undefined) {
           continue;
-
-        // Got one - do a search for the top-level symbol
-        this.search(top_level_symbol, false);
-
-        // Now select the right search result
-        var results = this.results_element.select("li");
-        var results_len = results.length;
-        for (var j=0 ; j<results_len ; ++j) {
-          if (results[j].down().innerText == name) {
-            this.set_selection(j);
-            break;
-          }
         }
 
-        return;
+        var len = data.length;
+        for (var j=0 ; j<len ; ++j) {
+          if (data[j][1] != symbol)
+            continue;
+
+          // Got one - do a search for the top-level symbol
+          this.search(symbol, false);
+
+          // Now select the right search result
+          var results = this.results_element.select("li");
+          var results_len = results.length;
+          for (var j=0 ; j<results_len ; ++j) {
+            if (results[j].select("a")[0].innerText == name) {
+              this.set_selection(j);
+              break;
+            }
+          }
+
+          return;
+        }
+      }
+
+      if (dot == -1) {
+        break;
       }
     }
   }
