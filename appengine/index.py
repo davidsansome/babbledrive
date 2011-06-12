@@ -1,8 +1,12 @@
 from google.appengine.dist import use_library
 use_library('django', '1.1')
 
-import json
 import os
+
+try:
+  import json
+except ImportError:
+  import simplejson as json
 
 from django.template import RequestContext
 from google.appengine.api import users
