@@ -1,11 +1,11 @@
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="static/index.css" />
+  <link rel="stylesheet" type="text/css" href="static/index.css?{{ content_version }}" />
   <script>
     var user_info = {{ user_info|safe }};
   </script>
   <script language="javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js"></script>
-  <script language="javascript" src="static/index.js"></script>
+  <script language="javascript" src="static/index.js?{{ content_version }}"></script>
   <title>babbledrive</title>
 </head>
 <body>
@@ -25,7 +25,7 @@
     {% else %}
       <a href="{{ login_url|escape }}">sign in</a>
     {% endif %}
-    <a href="static/welcome.html" target="contentframe">welcome</a>
+    <a href="static/welcome.html?{{ content_version }}" target="contentframe">welcome</a>
     <a href="https://github.com/davidsansome/babbledrive">source</a>
   </div>
 </div>
@@ -36,7 +36,7 @@
 </div>
 
 <div id="content">
-  <iframe name="contentframe" id="contentframe" src="static/welcome.html"></iframe>
+  <iframe name="contentframe" id="contentframe" src="static/welcome.html?{{ content_version }}"></iframe>
 </div>
 
 <div id="library" style="display: none;">

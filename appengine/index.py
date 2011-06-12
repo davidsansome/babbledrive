@@ -11,6 +11,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 
+CONTENT_VERSION  = 1
 DEFAULT_PACKAGES = ["python-2.7.1"]
 
 
@@ -41,12 +42,13 @@ class IndexPage(webapp.RequestHandler):
         user_info["selected_packages"] = record.selected_packages
 
     params = {
-      "user_info":    json.dumps(user_info),
-      "email":        user_info["email"],
-      "nickname":     user_info["nickname"],
-      "is_logged_in": user is not None,
-      "login_url":    users.create_login_url("/"),
-      "logout_url":   users.create_logout_url("/"),
+      "content_version": CONTENT_VERSION,
+      "user_info":       json.dumps(user_info),
+      "email":           user_info["email"],
+      "nickname":        user_info["nickname"],
+      "is_logged_in":    user is not None,
+      "login_url":       users.create_login_url("/"),
+      "logout_url":      users.create_logout_url("/"),
     }
 
     t = template.load(os.path.join(os.path.dirname(__file__), "index.html"))
