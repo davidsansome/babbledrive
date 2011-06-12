@@ -34,7 +34,7 @@ a {
 #search {
   margin: 0px;
   border: 1px solid #C0C0FF;
-  background: url(images/search.png) left no-repeat;
+  background: url(images/sprites.png) 0px -80px no-repeat;
   width: 100%;
   height: 22px;
   padding-left: 18px;
@@ -63,9 +63,9 @@ a {
   border-bottom: 1px solid transparent;
   background-repeat: no-repeat;
   background-position: 0px 2px;
-  padding-left: 20px;
   padding-top: 2px;
   padding-bottom: 2px;
+  white-space: nowrap;
 }
 
 #searchresults li:hover {
@@ -79,19 +79,26 @@ a {
   border-bottom: 1px solid #A0A0FF;
 }
 
-#searchresults li.attribute   { background-image: url(images/var.png); }
-#searchresults li.cfunction   { background-image: url(images/func.png); }
-#searchresults li.class       { background-image: url(images/class.png); }
-#searchresults li.classmethod { background-image: url(images/func.png); }
-#searchresults li.cmacro      { background-image: url(images/macro.png); }
-#searchresults li.cmember     { background-image: url(images/var.png); }
-#searchresults li.ctype       { background-image: url(images/class.png); }
-#searchresults li.cvar        { background-image: url(images/var.png); }
-#searchresults li.data        { background-image: url(images/enum.png); }
-#searchresults li.exception   { background-image: url(images/class.png); }
-#searchresults li.function    { background-image: url(images/func.png); }
-#searchresults li.method      { background-image: url(images/func.png); }
-#searchresults li.mod         { background-image: url(images/class.png); }
+#searchresults li .icon {
+  width: 16px;
+  height: 16px;
+  float: left;
+  margin: 0px 2px 0px 2px;
+}
+
+#searchresults li.attribute   .icon { background: url(images/sprites.png) 0px -118px no-repeat; }
+#searchresults li.cfunction   .icon { background: url(images/sprites.png) 0px -102px no-repeat; }
+#searchresults li.class       .icon { background: url(images/sprites.png) 0px -0px   no-repeat; }
+#searchresults li.classmethod .icon { background: url(images/sprites.png) 0px -102px no-repeat; }
+#searchresults li.cmacro      .icon { background: url(images/sprites.png) 0px -48px  no-repeat; }
+#searchresults li.cmember     .icon { background: url(images/sprites.png) 0px -118px no-repeat; }
+#searchresults li.ctype       .icon { background: url(images/sprites.png) 0px -0px   no-repeat; }
+#searchresults li.cvar        .icon { background: url(images/sprites.png) 0px -118px no-repeat; }
+#searchresults li.data        .icon { background: url(images/sprites.png) 0px -16px  no-repeat; }
+#searchresults li.exception   .icon { background: url(images/sprites.png) 0px -0px   no-repeat; }
+#searchresults li.function    .icon { background: url(images/sprites.png) 0px -102px no-repeat; }
+#searchresults li.method      .icon { background: url(images/sprites.png) 0px -102px no-repeat; }
+#searchresults li.mod         .icon { background: url(images/sprites.png) 0px -0px   no-repeat; }
 
 span.highlight {
   background-color: rgba(255, 255, 200, 0.75);
@@ -146,9 +153,8 @@ span.highlight {
 }
 
 #librarybutton {
-  background: url(images/library.png) 4px 4px no-repeat;
+  z-index: 1;
   color: rgba(0, 0, 0, 0.5);
-  padding-left: 22px;
   padding-top: 4px;
 
   height: 25px;
@@ -158,6 +164,14 @@ span.highlight {
   cursor: pointer;
   color: black;
   text-shadow: rgba(0, 0, 0, 0.5) 1px 1px 5px;
+}
+
+#librarybutton .icon {
+  background: url(images/sprites.png) 0px -32px no-repeat;
+  float: left;
+  width: 16px;
+  height: 16px;
+  margin: 0px 4px 0px 4px;
 }
 
 #library {
@@ -178,6 +192,9 @@ span.highlight {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd65e', endColorstr='#febf04',GradientType=0 );
   background: linear-gradient(top, #ffd65e 0%,#febf04 100%);
 
+  border-width: 0px 1px 1px 0px;
+  border-color: rgba(0, 0, 0, 0.5);
+  border-style: solid;
   border-bottom-right-radius: 20px;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 40px;
   clip: rect(0px, 650px, 350px, 0px);

@@ -89,7 +89,7 @@ var Library = Class.create({
       }
     }
 
-    this.button_element.innerHTML = button_text;
+    this.button_element.select(".text")[0].innerHTML = button_text;
   },
 
   button_clicked: function() {
@@ -321,6 +321,7 @@ var SearchController = Class.create({
 
         // Add to the list of results
         var html = '<li class="' + this.TYPE_CSS_CLASS[result.type] + '">' +
+                   '<div class="icon"></div>' +
                    '<a target="contentframe" href="' + result.url + '">' +
                    highlighted_name + '</a></li>';
 
