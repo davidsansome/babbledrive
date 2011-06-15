@@ -1,3 +1,4 @@
+# System imports
 import os
 
 try:
@@ -5,10 +6,13 @@ try:
 except ImportError:
   import simplejson as json
 
+# Appengine imports
 from google.appengine.api import users
 from google.appengine.ext import db, webapp
-from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
+
+# Local imports
+import pyratemp
 
 
 CONTENT_VERSION  = 2
@@ -52,7 +56,9 @@ class IndexPage(webapp.RequestHandler):
     }
 
     template_path = os.path.join(os.path.dirname(__file__), "index.html")
-    self.response.out.write(template.render(template_path, params))
+    template = pyratemp.Template(filename=template_path, data=params,
+      escape=pyratemp.HTML)
+    self.response.out.write(template().encode("utf-8"))
 
 
 class SaveAction(webapp.RequestHandler):
