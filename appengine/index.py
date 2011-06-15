@@ -1,6 +1,3 @@
-from google.appengine.dist import use_library
-use_library('django', '1.1')
-
 import os
 
 try:
@@ -8,7 +5,6 @@ try:
 except ImportError:
   import simplejson as json
 
-from django.template import RequestContext
 from google.appengine.api import users
 from google.appengine.ext import db, webapp
 from google.appengine.ext.webapp import template
@@ -55,8 +51,8 @@ class IndexPage(webapp.RequestHandler):
       "logout_url":      users.create_logout_url("/"),
     }
 
-    t = template.load(os.path.join(os.path.dirname(__file__), "index.html"))
-    self.response.out.write(t.render(RequestContext(self.request, params)))
+    template_path = os.path.join(os.path.dirname(__file__), "index.html")
+    self.response.out.write(template.render(template_path, params))
 
 
 class SaveAction(webapp.RequestHandler):

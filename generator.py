@@ -7,6 +7,7 @@ import os.path
 import re
 import shutil
 import subprocess
+import sys
 import tarfile
 import urllib2
 import zlib
