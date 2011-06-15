@@ -1,0 +1,5 @@
+*.pyc
+_downloads
+_work
+appengine/static/data/
+appengine/static/doc
