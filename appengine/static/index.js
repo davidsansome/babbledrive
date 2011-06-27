@@ -19,7 +19,8 @@ var Library = Class.create({
       ["lxml",         this.DOC_TYPE_EPYDOC, ["2.3"]],
       ["sqlalchemy",   this.DOC_TYPE_SPHINX, ["0.7.1"]],
       ["django",       this.DOC_TYPE_SPHINX, ["1.3"]],
-      ["mysql-python", this.DOC_TYPE_EPYDOC, ["1.2.3"]]
+      ["mysql-python", this.DOC_TYPE_EPYDOC, ["1.2.3"]],
+      ["tkinter",      this.DOC_TYPE_EPYDOC, ["2.7.1"]]
     ];
 
     // Holds the search index for each package - populated asyncronously by
