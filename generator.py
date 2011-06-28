@@ -4,6 +4,7 @@ import logging
 import operator
 import os
 import os.path
+import pickle
 import re
 import shutil
 import subprocess
@@ -53,6 +54,18 @@ class Generator(object):
     "py:attribute": 10,
   }
 
+  PYDOCTOR_TYPES = {
+    "Package": 0,
+    "Module": 0,
+    "Class": 1,
+    "Interface": 1,
+    "Class Method": 5,
+    "Static Method": 5,
+    "Function": 6,
+    "Method": 7,
+    "Attribute": 10,
+  }
+
   # Set by main.py
   OPTIONS = None
 
@@ -73,8 +86,16 @@ class Generator(object):
     path.insert(0, os.path.join(epydoc, "scripts"))
     pythonpath.insert(0, epydoc)
 
+    # Add pydoctor paths to the environment
+    pydoctor = os.path.join(self.cwd, "generator-pydoctor")
+    path.insert(0, os.path.join(pydoctor, "bin"))
+    pythonpath.insert(0, pydoctor)
+
     self._env["PATH"] = ":".join(path)
     self._env["PYTHONPATH"] = ":".join(pythonpath)
+
+    # pydoctor goes on our own pythonpath too
+    sys.path.insert(0, pydoctor)
 
     # Create the downloads directory
     self.downloads = os.path.join(self.cwd, "_downloads")
@@ -126,11 +147,11 @@ class Generator(object):
     self.logger.info("extracting %s" % path)
 
     tar = tarfile.open(path)
-    firstname = tar.getnames()[0]
+    directory = tar.getnames()[0].split('/')[0]
     tar.extractall(self.work)
     tar.close()
 
-    return os.path.join(self.work, firstname)
+    return os.path.join(self.work, directory)
 
   def Run(self, args, **kwargs):
     self.logger.info("running %s" % " ".join(args))
@@ -154,6 +175,28 @@ class Generator(object):
 
       raise GeneratorError("Command '%s' exited with status %d" % (
         args[0], handle.returncode))
+
+  def RunPydoctor(self, project_name, project_url, packages, system_class=None,
+                  html_viewsource_base=None, **kwargs):
+    args = ["pydoctor",
+      "--project-name", project_name,
+      "--project-url", project_url,
+      "--html-output", "babbledrive-apidocs",
+      "--project-base-dir", kwargs["cwd"],
+      "--output-pickle", "babbledrive-pickle",
+      "--quiet", "--make-html",
+    ]
+
+    for package in packages:
+      args += ["--add-package", package]
+
+    if system_class is not None:
+      args += ["--system-class", system_class]
+
+    if html_viewsource_base is not None:
+      args += ["--html-viewsource-base", html_viewsource_base]
+
+    self.Run(args, **kwargs)
 
   def TakeEpydocOutput(self, path):
     self.logger.info("taking epydoc output from %s" % path)
@@ -265,6 +308,49 @@ class Generator(object):
     # Move everything else
     self.logger.info("installing %s" % self.output_doc)
     shutil.move(path, self.output_doc)
+
+  def TakePydoctorOutput(self, path):
+    self.logger.info("taking pydoctor output from %s" % path)
+
+    pickle_path = os.path.join(path, "babbledrive-pickle")
+    html_path   = os.path.join(path, "babbledrive-apidocs")
+    system = pickle.load(open(pickle_path))
+
+    items = []
+    for o in system.allobjects.values():
+      name = o.fullName()
+      type_index = self.PYDOCTOR_TYPES[o.kind]
+
+      if o.kind == "Class" and "Exception" in o.bases:
+        type_index = 2
+
+      if o.kind in ["Method", "Function"]:
+        url = "%s.html#%s" % (o.parent.fullName(), o.name)
+      else:
+        url = "%s.html" % name
+
+      items.append([name.lower(), name, type_index, url])
+
+    # Sort the list by name
+    items = sorted(items, key=operator.itemgetter(0))
+
+    # Remove old output
+    self.logger.info("removing old data")
+    if os.path.exists(self.output_data):
+      os.remove(self.output_data)
+    if os.path.exists(self.output_doc):
+      shutil.rmtree(self.output_doc)
+
+    # Write out the data file
+    self.logger.info("installing %s" % self.output_data)
+    output_file = open(self.output_data, 'w')
+    output_file.write('library.register_package_data("%s-%s",%s);' % (
+      self.name, self.version, json.dumps(items, separators=(',', ':'))))
+    output_file.close()
+
+    # Move everything else
+    self.logger.info("installing %s" % self.output_doc)
+    shutil.move(html_path, self.output_doc)
 
   def Generate(self):
     raise NotImplementedError()

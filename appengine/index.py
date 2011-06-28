@@ -15,7 +15,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 import pyratemp
 
 
-CONTENT_VERSION  = 3
+CONTENT_VERSION  = 4
 DEFAULT_PACKAGES = ["python-2.7.1"]
 
 

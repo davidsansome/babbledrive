@@ -1,6 +1,7 @@
 var Library = Class.create({
   DOC_TYPE_SPHINX: 0,
   DOC_TYPE_EPYDOC: 1,
+  DOC_TYPE_PYDOCTOR: 2,
 
   initialize: function(header_element, button_element, library_element,
                        contents_element) {
@@ -11,16 +12,17 @@ var Library = Class.create({
 
     // The list of available packages
     this.PACKAGES = [
-      ["python",       this.DOC_TYPE_SPHINX, ["2.7.1"]],
-      ["pyinotify",    this.DOC_TYPE_EPYDOC, ["0.9.2"]],
-      ["simplejson",   this.DOC_TYPE_SPHINX, ["2.1.6"]],
-      ["dbus-python",  this.DOC_TYPE_EPYDOC, ["0.84.0"]],
-      ["paramiko",     this.DOC_TYPE_EPYDOC, ["1.7.6"]],
-      ["lxml",         this.DOC_TYPE_EPYDOC, ["2.3"]],
-      ["sqlalchemy",   this.DOC_TYPE_SPHINX, ["0.7.1"]],
-      ["django",       this.DOC_TYPE_SPHINX, ["1.3"]],
-      ["mysql-python", this.DOC_TYPE_EPYDOC, ["1.2.3"]],
-      ["tkinter",      this.DOC_TYPE_EPYDOC, ["2.7.1"]]
+      ["python",       this.DOC_TYPE_SPHINX,   ["2.7.1"]],
+      ["pyinotify",    this.DOC_TYPE_EPYDOC,   ["0.9.2"]],
+      ["simplejson",   this.DOC_TYPE_SPHINX,   ["2.1.6"]],
+      ["dbus-python",  this.DOC_TYPE_EPYDOC,   ["0.84.0"]],
+      ["paramiko",     this.DOC_TYPE_EPYDOC,   ["1.7.6"]],
+      ["lxml",         this.DOC_TYPE_EPYDOC,   ["2.3"]],
+      ["sqlalchemy",   this.DOC_TYPE_SPHINX,   ["0.7.1"]],
+      ["django",       this.DOC_TYPE_SPHINX,   ["1.3"]],
+      ["mysql-python", this.DOC_TYPE_EPYDOC,   ["1.2.3"]],
+      ["tkinter",      this.DOC_TYPE_EPYDOC,   ["2.7.1"]],
+      ["twisted",      this.DOC_TYPE_PYDOCTOR, ["11.0.0"]]
     ];
 
     // Holds the search index for each package - populated asyncronously by
@@ -534,7 +536,16 @@ var SearchController = Class.create({
 
       new_hash = "#" + page;
       if (hash) {
-        new_hash += "." + hash.substr(1)
+        new_hash += "." + hash.substr(1);
+      }
+    } else if (doc_type == this.library.DOC_TYPE_PYDOCTOR) {
+      // Pydoctor links are the package-or-class-name.html#function
+      // Take .html off the page name
+      new_hash = "#" + page.substr(0, page.length - 5);
+
+      // Add the hash if the URL has one
+      if (hash) {
+        new_hash += "." + hash.substr(1);
       }
     } else {
       // Unknown doc type
