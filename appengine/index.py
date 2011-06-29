@@ -1,5 +1,9 @@
 # System imports
+import datetime
+import logging
+import time
 import os
+import zipimport
 
 try:
   import json
@@ -17,6 +21,19 @@ import pyratemp
 
 CONTENT_VERSION  = 4
 DEFAULT_PACKAGES = ["python-2.7.1"]
+EXPIRATION_SECS = 2419200
+LOGGER = logging.getLogger("index")
+
+MIMETYPES = {
+  "css":  "text/css",
+  "gif":  "image/gif",
+  "html": "text/html;charset=utf-8",
+  "js":   "application/x-javascript;charset=utf-8",
+  "png":  "image/png",
+  "sh":   "application/x-sh",
+  "text": "text/plain",
+  "zip":  "application/zip",
+}
 
 
 class UserInfo(db.Model):
@@ -96,9 +113,49 @@ class SaveAction(webapp.RequestHandler):
     record.put()
 
 
+class LoadZippedPage(webapp.RequestHandler):
+  def get(self, package, filename):
+    for bad_char in "-./":
+      package = package.replace(bad_char, "_")
+
+    path = os.path.join(os.path.dirname(__file__), package + ".zip")
+
+    LOGGER.info("Opening file '%s' from zip file '%s'", filename, path)
+
+    # Open the zip file
+    try:
+      zipfile = zipimport.zipimporter(path)
+    except zipimport.ZipImportError:
+      self.error(404)
+      return
+
+    # Get the file out
+    try:
+      data = zipfile.get_data(filename)
+    except IOError:
+      self.error(404)
+      return
+
+    # Write headers
+    self.response.headers["Cache-Control"] = "public, max-age=%d" % EXPIRATION_SECS
+
+    expires = datetime.datetime.fromtimestamp(time.time() + EXPIRATION_SECS)
+    self.response.headers["Expires"] = expires.strftime("%a, %d %b %Y %H:%M:%S GMT")
+
+    extension = filename.split('.')[-1]
+    if extension in MIMETYPES:
+      self.response.headers["Content-Type"] = MIMETYPES[extension]
+    else:
+      self.response.headers["Content-Type"] = "application/octet-stream"
+
+    # Write data
+    self.response.out.write(data)
+
+
 application = webapp.WSGIApplication([
   ('/', IndexPage),
   ('/api/save', SaveAction),
+  ('/static/doc/([^/]*)/(.*)', LoadZippedPage),
 ], debug=True)
 
 

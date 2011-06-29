@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tarfile
 import urllib2
+import zipfile
 import zlib
 
 class GeneratorError(Exception):
@@ -19,7 +20,7 @@ class GeneratorError(Exception):
 
 class Generator(object):
   OUTPUT_DATA = "appengine/static/data/%s-%s.js"
-  OUTPUT_DOC  = "appengine/static/doc/%s-%s"
+  OUTPUT_ZIP  = "appengine/%s.zip"
 
   EPYDOC_MAGIC = "@@BABBLEDRIVE_NAMEVERSION@@"
 
@@ -107,8 +108,12 @@ class Generator(object):
     os.makedirs(self.work)
 
     # Output directories
+    self.safe_name = "%s_%s" % (name, version)
+    for bad_char in "-.":
+      self.safe_name = self.safe_name.replace(bad_char, "_")
+
     self.output_data = os.path.join(self.cwd, self.OUTPUT_DATA % (name, version))
-    self.output_doc  = os.path.join(self.cwd, self.OUTPUT_DOC  % (name, version))
+    self.output_zip  = os.path.join(self.cwd, self.OUTPUT_ZIP  % self.safe_name)
 
   def AdjustSphinxConf(self, filename):
     contents = open(filename).read()
@@ -223,19 +228,32 @@ class Generator(object):
       if os.path.exists(filepath):
         os.remove(filepath)
 
-    # Remove old output
+    self._RemoveOldOutput()
+    self._TakeData(babbledrive_data)
+    self._TakeDocs(path)
+
+  def _RemoveOldOutput(self):
     self.logger.info("removing old data")
     if os.path.exists(self.output_data):
       os.remove(self.output_data)
-    if os.path.exists(self.output_doc):
-      shutil.rmtree(self.output_doc)
+    if os.path.exists(self.output_zip):
+      os.remove(self.output_zip)
 
-    # Move new files
+  def _TakeData(self, path):
     self.logger.info("installing %s" % self.output_data)
-    shutil.move(babbledrive_data, self.output_data)
+    shutil.move(path, self.output_data)
 
-    self.logger.info("installing %s" % self.output_doc)
-    shutil.move(path, self.output_doc)
+  def _TakeDocs(self, path):
+    self.logger.info("archiving %s to %s" % (path, self.output_zip))
+    output = zipfile.ZipFile(self.output_zip, 'w', zipfile.ZIP_DEFLATED)
+
+    for dirpath, dirnames, filenames in os.walk(path):
+      for filename in filenames:
+        filepath = os.path.join(dirpath, filename)
+        relpath = os.path.relpath(filepath, path)
+        output.write(filepath, relpath)
+
+    output.close()
 
   def TakeSphinxOutput(self, path):
     self.logger.info("taking sphinx output from %s" % path)
@@ -254,7 +272,6 @@ class Generator(object):
     if self.SPHINX_ZLIB_MARKER in data:
       start = data.index(self.SPHINX_ZLIB_MARKER) + len(self.SPHINX_ZLIB_MARKER)
       data = zlib.decompress(data[start:])
-      print data
 
     # Process each line
     for line in data.split("\n"):
@@ -291,12 +308,8 @@ class Generator(object):
     # Sort the list by name
     items = sorted(items, key=operator.itemgetter(0))
 
-    # Remove old output
-    self.logger.info("removing old data")
-    if os.path.exists(self.output_data):
-      os.remove(self.output_data)
-    if os.path.exists(self.output_doc):
-      shutil.rmtree(self.output_doc)
+    self._RemoveOldOutput()
+    self._TakeDocs(path)
 
     # Write out the data file
     self.logger.info("installing %s" % self.output_data)
@@ -304,10 +317,6 @@ class Generator(object):
     output_file.write('library.register_package_data("%s-%s",%s);' % (
       self.name, self.version, json.dumps(items, separators=(',', ':'))))
     output_file.close()
-
-    # Move everything else
-    self.logger.info("installing %s" % self.output_doc)
-    shutil.move(path, self.output_doc)
 
   def TakePydoctorOutput(self, path):
     self.logger.info("taking pydoctor output from %s" % path)
@@ -334,12 +343,8 @@ class Generator(object):
     # Sort the list by name
     items = sorted(items, key=operator.itemgetter(0))
 
-    # Remove old output
-    self.logger.info("removing old data")
-    if os.path.exists(self.output_data):
-      os.remove(self.output_data)
-    if os.path.exists(self.output_doc):
-      shutil.rmtree(self.output_doc)
+    self._RemoveOldOutput()
+    self._TakeDocs(html_path)
 
     # Write out the data file
     self.logger.info("installing %s" % self.output_data)
@@ -347,10 +352,6 @@ class Generator(object):
     output_file.write('library.register_package_data("%s-%s",%s);' % (
       self.name, self.version, json.dumps(items, separators=(',', ':'))))
     output_file.close()
-
-    # Move everything else
-    self.logger.info("installing %s" % self.output_doc)
-    shutil.move(html_path, self.output_doc)
 
   def Generate(self):
     raise NotImplementedError()

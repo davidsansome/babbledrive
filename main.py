@@ -37,8 +37,6 @@ def main():
 
   # Load generator modules
   for filename in module_filenames:
-    logger.info("loading generators from %s" % filename)
-
     module_name = filename[:-3]
 
     module = __import__(module_name)
@@ -48,7 +46,6 @@ def main():
   for gen in generators:
     if (package_name is not None and gen.name != package_name) or \
        (package_version is not None and gen.version != package_version):
-      logger.info("skipping %s-%s" % (gen.name, gen.version))
       continue
 
     gen.Generate()
