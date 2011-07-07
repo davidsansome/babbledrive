@@ -2,12 +2,12 @@ import generator
 
 import os.path
 
-class TwistedGenerator(generator.Generator):
+class Generator(generator.Generator):
   NAME = "twisted"
   URL  = "http://pypi.python.org/packages/source/T/Twisted/Twisted-%s.tar.bz2"
 
   def __init__(self, version):
-    super(TwistedGenerator, self).__init__(self.NAME, version)
+    super(Generator, self).__init__(self.NAME, version)
 
   def Generate(self):
     tarball = self.DownloadSource(self.URL % self.version)
@@ -22,5 +22,5 @@ class TwistedGenerator(generator.Generator):
 
 def MakeGenerators():
   return [
-    TwistedGenerator("11.0.0"),
+    Generator("11.0.0"),
   ]

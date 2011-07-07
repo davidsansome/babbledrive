@@ -2,12 +2,12 @@ import generator
 
 import os.path
 
-class ParamikioGenerator(generator.Generator):
+class Generator(generator.Generator):
   NAME = "paramiko"
   URL  = "http://www.lag.net/paramiko/download/paramiko-%s.tar.gz"
 
   def __init__(self, version):
-    super(ParamikioGenerator, self).__init__(self.NAME, version)
+    super(Generator, self).__init__(self.NAME, version)
 
   def Generate(self):
     tarball = self.DownloadSource(self.URL % self.version)
@@ -19,5 +19,5 @@ class ParamikioGenerator(generator.Generator):
 
 def MakeGenerators():
   return [
-    ParamikioGenerator("1.7.6"),
+    Generator("1.7.6"),
   ]

@@ -2,12 +2,12 @@ import generator
 
 import os.path
 
-class DbusGenerator(generator.Generator):
+class Generator(generator.Generator):
   NAME = "dbus-python"
   URL  = "http://dbus.freedesktop.org/releases/dbus-python/dbus-python-%s.tar.gz"
 
   def __init__(self, version):
-    super(DbusGenerator, self).__init__(self.NAME, version)
+    super(Generator, self).__init__(self.NAME, version)
 
   def Generate(self):
     tarball = self.DownloadSource(self.URL % self.version)
@@ -20,5 +20,5 @@ class DbusGenerator(generator.Generator):
 
 def MakeGenerators():
   return [
-    DbusGenerator("0.84.0"),
+    Generator("0.84.0"),
   ]

@@ -3,12 +3,12 @@ import generator
 import glob
 import os.path
 
-class TkinterGenerator(generator.Generator):
+class Generator(generator.Generator):
   NAME = "tkinter"
   URL  = "http://www.python.org/ftp/python/%s/Python-%s.tar.bz2"
 
   def __init__(self, version):
-    super(TkinterGenerator, self).__init__(self.NAME, version)
+    super(Generator, self).__init__(self.NAME, version)
 
   def Generate(self):
     tarball = self.DownloadSource(self.URL % (self.version, self.version))
@@ -25,5 +25,5 @@ class TkinterGenerator(generator.Generator):
 
 def MakeGenerators():
   return [
-    TkinterGenerator("2.7.1"),
+    Generator("2.7.1"),
   ]

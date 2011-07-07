@@ -2,12 +2,12 @@ import generator
 
 import os.path
 
-class LxmlGenerator(generator.Generator):
+class Generator(generator.Generator):
   NAME = "lxml"
   URL  = "http://pypi.python.org/packages/source/l/lxml/lxml-%s.tar.gz"
 
   def __init__(self, version):
-    super(LxmlGenerator, self).__init__(self.NAME, version)
+    super(Generator, self).__init__(self.NAME, version)
 
   def Generate(self):
     tarball = self.DownloadSource(self.URL % self.version)
@@ -20,5 +20,5 @@ class LxmlGenerator(generator.Generator):
 
 def MakeGenerators():
   return [
-    LxmlGenerator("2.3"),
+    Generator("2.3"),
   ]

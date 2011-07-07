@@ -2,12 +2,12 @@ import generator
 
 import os.path
 
-class DjangoGenerator(generator.Generator):
+class Generator(generator.Generator):
   NAME = "django"
   URL  = "http://www.djangoproject.com/download/%s/tarball/"
 
   def __init__(self, version):
-    super(DjangoGenerator, self).__init__(self.NAME, version)
+    super(Generator, self).__init__(self.NAME, version)
 
   def Generate(self):
     tarball = self.DownloadSource(self.URL % self.version)
@@ -21,5 +21,5 @@ class DjangoGenerator(generator.Generator):
 
 def MakeGenerators():
   return [
-    DjangoGenerator("1.3"),
+    Generator("1.3"),
   ]

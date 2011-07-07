@@ -2,12 +2,12 @@ import generator
 
 import os.path
 
-class PyinotifyGenerator(generator.Generator):
+class Generator(generator.Generator):
   NAME = "pyinotify"
   URL  = "https://github.com/seb-m/pyinotify/tarball/%s"
 
   def __init__(self, version):
-    super(PyinotifyGenerator, self).__init__(self.NAME, version)
+    super(Generator, self).__init__(self.NAME, version)
 
   def Generate(self):
     tarball = self.DownloadSource(self.URL % self.version)
@@ -22,6 +22,6 @@ class PyinotifyGenerator(generator.Generator):
 
 def MakeGenerators():
   return [
-    PyinotifyGenerator("0.8.3"),
-    PyinotifyGenerator("0.9.2"),
+    Generator("0.8.3"),
+    Generator("0.9.2"),
   ]

@@ -2,12 +2,12 @@ import generator
 
 import os.path
 
-class SqlalchemyGenerator(generator.Generator):
+class Generator(generator.Generator):
   NAME = "sqlalchemy"
   URL  = "http://pypi.python.org/packages/source/S/SQLAlchemy/SQLAlchemy-%s.tar.gz"
 
   def __init__(self, version):
-    super(SqlalchemyGenerator, self).__init__(self.NAME, version)
+    super(Generator, self).__init__(self.NAME, version)
 
   def Generate(self):
     tarball = self.DownloadSource(self.URL % self.version)
@@ -22,5 +22,5 @@ class SqlalchemyGenerator(generator.Generator):
 
 def MakeGenerators():
   return [
-    SqlalchemyGenerator("0.7.1"),
+    Generator("0.7.1"),
   ]

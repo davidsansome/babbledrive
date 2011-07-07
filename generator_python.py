@@ -2,12 +2,12 @@ import generator
 
 import os.path
 
-class PythonGenerator(generator.Generator):
+class Generator(generator.Generator):
   NAME = "python"
   URL  = "http://www.python.org/ftp/python/%s/Python-%s.tar.bz2"
 
   def __init__(self, version):
-    super(PythonGenerator, self).__init__(self.NAME, version)
+    super(Generator, self).__init__(self.NAME, version)
 
   def Generate(self):
     tarball = self.DownloadSource(self.URL % (self.version, self.version))
@@ -22,5 +22,5 @@ class PythonGenerator(generator.Generator):
 
 def MakeGenerators():
   return [
-    PythonGenerator("2.7.1"),
+    Generator("2.7.1"),
   ]
