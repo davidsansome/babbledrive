@@ -11,6 +11,7 @@ import subprocess
 import sys
 import tarfile
 import urllib2
+import xml.etree.ElementTree
 import zipfile
 import zlib
 
@@ -345,6 +346,53 @@ class Generator(object):
 
     self._RemoveOldOutput()
     self._TakeDocs(html_path)
+
+    # Write out the data file
+    self.logger.info("installing %s" % self.output_data)
+    output_file = open(self.output_data, 'w')
+    output_file.write('library.register_package_data("%s-%s",%s);' % (
+      self.name, self.version, json.dumps(items, separators=(',', ':'))))
+    output_file.close()
+
+  def TakeDevhelpOutput(self, path):
+    self.logger.info("taking devhelp output from %s" % path)
+
+    index_path = glob.glob(os.path.join(path, "*.devhelp"))[0]
+    tree = xml.etree.ElementTree.parse(index_path)
+
+    items = []
+    for element in tree.getiterator():
+      if not element.tag.endswith("sub") and not element.tag.endswith("function"):
+        continue
+
+      name = element.get("name")
+      link = element.get("link")
+
+      if name is None or link is None or " " in name or "." not in name:
+        continue
+
+      if "#method-" in link or "#constructor-" in link:
+        type_index = 7
+      elif "#function-" in link:
+        type_index = 6
+      elif "#" not in link:
+        type_index = 1
+      else:
+        raise GeneratorError("Unknown devhelp type in link '%s'" % link)
+
+      print link
+
+      items.append([name.lower(), name, type_index, link])
+
+    # Sort the list by name
+    items = sorted(items, key=operator.itemgetter(0))
+
+    # Copy the css file
+    shutil.copy(os.path.join(path, "../style.css"),
+                os.path.join(path, "style.css"))
+
+    self._RemoveOldOutput()
+    self._TakeDocs(path)
 
     # Write out the data file
     self.logger.info("installing %s" % self.output_data)

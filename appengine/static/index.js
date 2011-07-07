@@ -2,6 +2,7 @@ var Library = Class.create({
   DOC_TYPE_SPHINX: 0,
   DOC_TYPE_EPYDOC: 1,
   DOC_TYPE_PYDOCTOR: 2,
+  DOC_TYPE_DEVHELP: 3,
 
   initialize: function(header_element, button_element, library_element,
                        contents_element) {
@@ -22,7 +23,8 @@ var Library = Class.create({
       ["django",       this.DOC_TYPE_SPHINX,   ["1.3"]],
       ["mysql-python", this.DOC_TYPE_EPYDOC,   ["1.2.3"]],
       ["tkinter",      this.DOC_TYPE_EPYDOC,   ["2.7.1"]],
-      ["twisted",      this.DOC_TYPE_PYDOCTOR, ["11.0.0"]]
+      ["twisted",      this.DOC_TYPE_PYDOCTOR, ["11.0.0"]],
+      ["pygobject",    this.DOC_TYPE_DEVHELP,  ["2.28.6"]]
     ];
 
     // Holds the search index for each package - populated asyncronously by
