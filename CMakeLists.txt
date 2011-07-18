@@ -24,6 +24,7 @@ endmacro(add_package)
 
 add_package(dbus dbus-python 0.84.0)
 add_package(django django 1.3)
+add_package(ipaddr ipaddr 2.1.9)
 add_package(lxml lxml 2.3)
 add_package(mysqlpython mysql-python 1.2.3)
 add_package(paramiko paramiko 1.7.6)

@@ -19,7 +19,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 import pyratemp
 
 
-CONTENT_VERSION  = 5
+CONTENT_VERSION  = 6
 DEFAULT_PACKAGES = ["python-2.7.1"]
 EXPIRATION_SECS = 2419200
 LOGGER = logging.getLogger("index")
