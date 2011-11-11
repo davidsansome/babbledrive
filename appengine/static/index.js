@@ -25,7 +25,8 @@ var Library = Class.create({
       ["tkinter",      this.DOC_TYPE_EPYDOC,   ["2.7.1"]],
       ["twisted",      this.DOC_TYPE_PYDOCTOR, ["11.0.0"]],
       ["pygobject",    this.DOC_TYPE_DEVHELP,  ["2.28.6"]],
-      ["ipaddr",       this.DOC_TYPE_EPYDOC,   ["2.1.9"]]
+      ["ipaddr",       this.DOC_TYPE_EPYDOC,   ["2.1.9"]],
+      ["httplib2",     this.DOC_TYPE_SPHINX,   ["0.7.1"]]
     ];
 
     // Holds the search index for each package - populated asyncronously by

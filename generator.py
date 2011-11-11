@@ -149,6 +149,14 @@ class Generator(object):
 
     return path
 
+  def CloneMecurial(self, url, tag=None):
+    self.Run(["hg", "clone", url, self.work])
+
+    if tag is not None:
+      self.Run(["hg", "checkout", tag], cwd=self.work)
+
+    return self.work
+
   def ExtractSource(self, path):
     self.logger.info("extracting %s" % path)
 
