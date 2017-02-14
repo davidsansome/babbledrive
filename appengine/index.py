@@ -11,9 +11,9 @@ except ImportError:
   import simplejson as json
 
 # Appengine imports
+import webapp2
 from google.appengine.api import users
-from google.appengine.ext import db, webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.ext import db
 
 # Local imports
 import pyratemp
@@ -41,7 +41,7 @@ class UserInfo(db.Model):
   selected_packages = db.StringListProperty(default=DEFAULT_PACKAGES)
 
 
-class IndexPage(webapp.RequestHandler):
+class IndexPage(webapp2.RequestHandler):
   def get(self):
     user_info = {
       "email":             None,
@@ -78,7 +78,7 @@ class IndexPage(webapp.RequestHandler):
     self.response.out.write(template().encode("utf-8"))
 
 
-class SaveAction(webapp.RequestHandler):
+class SaveAction(webapp2.RequestHandler):
   def post(self):
     user = users.get_current_user()
     if not user:
@@ -113,7 +113,7 @@ class SaveAction(webapp.RequestHandler):
     record.put()
 
 
-class LoadZippedPage(webapp.RequestHandler):
+class LoadZippedPage(webapp2.RequestHandler):
   def get(self, package, filename):
     for bad_char in "-./":
       package = package.replace(bad_char, "_")
@@ -152,12 +152,8 @@ class LoadZippedPage(webapp.RequestHandler):
     self.response.out.write(data)
 
 
-application = webapp.WSGIApplication([
+app = webapp2.WSGIApplication([
   ('/', IndexPage),
   ('/api/save', SaveAction),
   ('/static/doc/([^/]*)/(.*)', LoadZippedPage),
 ], debug=True)
-
-
-if __name__ == '__main__':
-  run_wsgi_app(application)
